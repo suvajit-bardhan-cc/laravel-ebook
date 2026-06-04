@@ -41,7 +41,7 @@ return new class extends Migration
             'email' => 'test@test.com',
             'password' => bcrypt('password'),
             'created_at' => now(),
-            'updated_at' => now(),
+            'updated_at' => now()
         ]);
     }
 
