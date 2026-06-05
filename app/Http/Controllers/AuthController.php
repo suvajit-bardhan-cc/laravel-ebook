@@ -67,6 +67,8 @@ class AuthController extends Controller
         return view('dashboard1');
     }
 
+    
+
     // Logout
     public function logout(Request $request)
     {

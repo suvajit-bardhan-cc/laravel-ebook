@@ -52,48 +52,7 @@
 
 <body>
 
-  <!-- ═══ HEADER ══════════════════════════════════════════════ -->
-  <header class="site-header">
-    <div class="hdr-top">
-      <a href="#" class="logo">
-        <img src="images/logo.png" alt="eBook Stack">
-      </a>
-
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search titles, authors…" oninput="renderBooks()">
-        <button type="button"><i class="fas fa-search"></i> Search</button>
-      </div>
-
-      <div class="hdr-actions">
-        <div class="dropdown">
-          <button class="btn-acct dropdown-toggle" data-bs-toggle="dropdown">
-            <i class="fas fa-user-circle"></i> My Account
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size:13px">
-            <li><a class="dropdown-item" href="bookmark.html"><i
-                  class="fas fa-bookmark fa-fw me-2 text-muted"></i>Bookmark</a>
-            </li>
-          </ul>
-        </div>
-        <!--<a href="#" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>-->
-        <form method="POST" action="{{ route('logout') }}" class="d-inline">
-        @csrf
-        <button type="submit" class="btn-logout border-0 bg-transparent">
-            <i class="fas fa-sign-out-alt"></i> Log Out
-        </button>
-    </form>
-      </div>
-    </div>
-  </header>
-
-  <!-- ═══ HERO STRIP ════════════════════════════════════════════ -->
-  <div class="hero-strip">
-    <div class="inner">
-      <span class="bc">
-        <a href="#">eBook Stack</a> &rsaquo; <span id="bcLabel">219 eBooks</span>
-      </span>
-    </div>
-  </div>
+  @include('layouts.header')
 
   <!-- ═══ PAGE BODY ════════════════════════════════════════════ -->
   <div class="page-wrap">
@@ -224,21 +183,7 @@
     </main>
   </div>
 
-  <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-links">
-        <a href="privacy.html">Privacy policy</a>
-        <a href="about.html">About</a>
-        <a href="terms.html">Terms of Use</a>
-        <a href="contact.html">Contact Us</a>
-      </div>
-      <div class="footer-brand">
-        <a href="index.html"><img src="images/logo.png" alt="eBook Stack" class="footer_logo"></a>
-      </div>
-      <span class="footer-copy">&copy; 2026 eBook Stack. All rights reserved.</span>
-    </div>
-  </footer>
+  @include('layouts.footer')
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
