@@ -64,7 +64,7 @@ class AuthController extends Controller
     // Dashboard
     public function dashboard()
     {
-        return view('dashboard');
+        return view('dashboard1');
     }
 
     // Logout
