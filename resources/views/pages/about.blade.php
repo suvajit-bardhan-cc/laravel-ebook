@@ -14,37 +14,28 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+    <style>
+    .btn-logout {
+    appearance: none;
+    -webkit-appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+}
+    </style>
+
 </head>
 
 <body>
 
     <!-- ═══ HEADER ══════════════════════════════════════════════ -->
-    <header class="site-header">
-        <div class="hdr-top">
-            <a href="index.html" class="logo">
-                <img src="images/logo.png" alt="eBook Stack">
-            </a>
-
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search titles, authors…">
-                <button type="button"><i class="fas fa-search"></i> Search</button>
-            </div>
-
-            <div class="hdr-actions">
-                <div class="dropdown">
-                    <button class="btn-acct dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle"></i> My Account
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size:13px">
-                        <li><a class="dropdown-item" href="bookmark.html"><i
-                                    class="fas fa-bookmark fa-fw me-2 text-muted"></i>Bookmark</a>
-                        </li>
-                    </ul>
-                </div>
-                <a href="#" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
-            </div>
-        </div>
-    </header>
+    @include('layouts.header')
     <!-- ═══ PAGE BODY ════════════════════════════════════════════ -->
     <div class="page-wrap">
         <div class="page_content">
