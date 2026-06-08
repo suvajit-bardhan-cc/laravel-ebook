@@ -17,7 +17,7 @@
     <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
 
         <!-- Link 1: Dashboard -->
-        <a href="#" class="sidebar-link active">
+        <a href="{{ route('admin.dashboard') }}" class="sidebar-link @if(request()->routeIs('admin.dashboard')) active @endif">
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -26,7 +26,7 @@
         </a>
 
         <!-- Link 2: Users -->
-        <a href="{{ route('admin.users.index') }}" class="sidebar-link" onclick="setActive(this)">
+        <a href="{{ route('admin.users.index') }}" class="sidebar-link @if(request()->routeIs('admin.users.index')) active @endif">
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M17 20h5v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2h5M12 12a4 4 0 100-8 4 4 0 000 8z"/>
@@ -53,9 +53,9 @@
             </button>
 
             <div id="dropdownMenu" class="hidden mt-0.5 ml-3 pl-4 border-l border-slate-200 dark:border-slate-700 space-y-0.5">
-            <a href="#" class="sidebar-link text-xs" onclick="setActive(this)">General</a>
-            <a href="#" class="sidebar-link text-xs" onclick="setActive(this)">Security</a>
-            <a href="#" class="sidebar-link text-xs" onclick="setActive(this)">Notifications</a>
+            <a href="#" class="sidebar-link text-xs">General</a>
+            <a href="#" class="sidebar-link text-xs">Security</a>
+            <a href="#" class="sidebar-link text-xs">Notifications</a>
             </div>
         </div>
     </nav>

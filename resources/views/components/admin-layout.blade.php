@@ -4,14 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Admin Panel</title>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+
     <script>
         tailwind.config = {
-        darkMode: 'class',
+            darkMode: 'class',
         }
     </script>
+
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+
     <style>
         * { font-family: 'DM Sans', sans-serif; }
 
@@ -59,6 +63,23 @@
         .dropdown-item:hover { background-color: #f1f5f9; }
         html.dark .dropdown-item { color: #e2e8f0; }
         html.dark .dropdown-item:hover { background-color: #334155; }
+
+        /* Custom pagination styles */
+        .pagination {
+            @apply flex justify-center items-center gap-2;
+        }
+
+        .pagination .page-item {
+            @apply list-none;
+        }
+
+        .pagination .page-link {
+            @apply px-3 py-1 rounded-lg text-sm font-medium bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors;
+        }
+
+        .pagination .active .page-link {
+            @apply bg-blue-600 border-blue-600 text-white hover:bg-blue-700;
+        }
     </style>
 </head>
 <body class="bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 transition-colors duration-200">
@@ -102,10 +123,10 @@
         }
 
         /* ---- Active link ---- */
-        function setActive(el) {
-            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-            el.classList.add('active');
-        }
+        // function setActive(el) {
+        //     document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+        //     el.classList.add('active');
+        // }
 
         /* ---- Header profile dropdown ---- */
         function toggleProfileMenu() {

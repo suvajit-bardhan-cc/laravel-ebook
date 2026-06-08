@@ -1,11 +1,8 @@
-<header class="h-16 shrink-0 flex items-center justify-between px-4 lg:px-6
-            bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+<header class="h-16 shrink-0 flex items-center justify-between px-4 lg:px-6 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
 
     <!-- Hamburger (mobile) -->
     <button onclick="openSidebar()" class="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
 
     <!-- Page title -->
@@ -75,13 +72,12 @@
             Account Settings
             </a>
             <div class="border-t border-slate-100 dark:border-slate-700 mt-1 pt-1">
-            <a href="#" class="dropdown-item text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                </svg>
-                Sign out
-            </a>
+                <form method="POST" action="/logout">@csrf
+                    <button type="submit" class="w-full dropdown-item text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        Sign out
+                    </button>
+                </form>
             </div>
         </div>
         </div>
