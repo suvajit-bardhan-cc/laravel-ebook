@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -54,9 +55,61 @@ class UserController extends Controller
         return view('admin.users.create');
     }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'type' => 'required|in:0,1',
+            'status' => 'required|in:active,inactive,banned,pending',
+            'email_verified' => 'nullable|boolean',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => $request->type,
+            'status' => $request->status,
+            'email_verified_at' => $request->has('email_verified') ? now() : null,
+        ]);
+
+        // Optional: Send welcome email
+        // Mail::to($user->email)->send(new WelcomeUser($user, $request->password));
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User created successfully!');
+    }
+
     public function edit(User $user): View
     {
         return view('admin.users.edit', compact('user'));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8',
+            'type' => 'required|in:0,1',
+            'status' => 'required|in:active,inactive,banned,pending',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->type = $request->type;
+        $user->status = $request->status;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User updated successfully!');
     }
 
     public function destroy(User $user)
@@ -71,7 +124,7 @@ class UserController extends Controller
         $request->validate([
             'status' => 'required|in:active,inactive,banned,pending'
         ]);
-    
+
         $oldStatus = $user->status;
         $user->status = $request->status;
         $user->save();

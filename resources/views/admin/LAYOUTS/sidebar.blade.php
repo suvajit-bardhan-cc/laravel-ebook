@@ -26,7 +26,7 @@
         </a>
 
         <!-- Link 2: Users -->
-        <a href="{{ route('admin.users.index') }}" class="sidebar-link @if(request()->routeIs('admin.users.index')) active @endif">
+        <a href="{{ route('admin.users.index') }}" class="sidebar-link @if(request()->routeIs('admin.users.*')) active @endif">
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M17 20h5v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2h5M12 12a4 4 0 100-8 4 4 0 000 8z"/>
