@@ -65,4 +65,18 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')
             ->with('success', 'User deleted successfully.');
     }
+
+    public function updateStatus(Request $request, User $user)
+    {
+        $request->validate([
+            'status' => 'required|in:active,inactive,banned,pending'
+        ]);
+
+        $oldStatus = $user->status;
+        $user->status = $request->status;
+        $user->save();
+
+        return redirect()->route('admin.users.index')
+            ->with('success', "User status changed from " . ucfirst($oldStatus) . " to " . ucfirst($user->status));
+    }
 }

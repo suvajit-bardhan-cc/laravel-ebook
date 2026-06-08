@@ -14,5 +14,6 @@ Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(fun
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
         Route::put('/{user}/edit', [UserController::class, 'update'])->name('update');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+        Route::patch('/{user}/status', [UserController::class, 'updateStatus'])->name('update-status');
     });
 });

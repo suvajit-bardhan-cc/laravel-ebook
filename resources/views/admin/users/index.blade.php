@@ -135,9 +135,15 @@
                                         ];
                                         $color = $statusColors[$user->status] ?? 'gray';
                                     @endphp
-                                    <span class="px-2 py-1 text-xs rounded-full bg-{{ $color }}-100 dark:bg-{{ $color }}-900/30 text-{{ $color }}-700 dark:text-{{ $color }}-400">
-                                        {{ ucfirst($user->status ?? 'Active') }}
-                                    </span>
+                                    <button onclick="openStatusModal({{ $user->id }})"
+                                            class="px-2 py-1 text-xs rounded-full cursor-pointer transition-all hover:scale-105 bg-{{ $color }}-100 dark:bg-{{ $color }}-900/30 text-{{ $color }}-700 dark:text-{{ $color }}-400">
+                                        {{ ucfirst($user->status) }}
+                                    </button>
+                                    
+                                    <!-- Status Change Modal for this user -->
+                                    <x-status-change-modal 
+                                        :user-id="$user->id" 
+                                        :current-status="$user->status" />
                                 </td>
                                 <td class="px-5 py-4 text-slate-500 dark:text-slate-400 text-sm">
                                     {{ $user->created_at->format('M d, Y') }}
