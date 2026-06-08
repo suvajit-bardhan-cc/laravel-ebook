@@ -22,7 +22,7 @@
             <i class="fas fa-user-circle"></i> My Account
           </button>
           <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size:13px">
-            <li><a class="dropdown-item" href="bookmark.html"><i
+            <li><a class="dropdown-item" href="{{ route('bookmark') }}"><i
                   class="fas fa-bookmark fa-fw me-2 text-muted"></i>Bookmark</a>
             </li>
           </ul>

@@ -28,5 +28,8 @@ Route::view('/privacy', 'pages.privacy')->name('privacy');
 Route::view('/terms', 'pages.terms')->name('terms');
 Route::view('/contact', 'pages.contact')->name('contact');
 
+// Bookmark routes
+Route::get('/bookmark', [AuthController::class, 'bookmark'])->name('bookmark');
+
 // Admin routes
 require __DIR__.'/admin.php';
