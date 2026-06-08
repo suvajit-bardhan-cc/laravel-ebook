@@ -10,9 +10,14 @@ class Book extends Model
         'title',
         'author_name',
         'language',
-        'about'
+        'about',
+        'image',
+        'year',
     ];
 
+    /**
+     * Categories belonging to the book.
+     */
     public function categories()
     {
         return $this->belongsToMany(Category::class);

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\DB;
+use App\Models\Book;
+use App\Models\Category;
 class AuthController
 {
     /*
@@ -111,9 +112,15 @@ class AuthController
     public function dashboard()
     {
         $books = Book::with('categories')->get();
-        return view('dashboard1', compact('books'));
-        //return view('dashboard1');
+
+        $categories = Category::withCount('books')->get();
+
+        return view('dashboard1', compact(
+            'books',
+            'categories'
+        ));
     }
+
 
     // Bookmark
     public function bookmark()
@@ -129,4 +136,13 @@ class AuthController
         $request->session()->regenerateToken();
         return redirect()->route('login');
     }
+
+  
+
+
+
+
+
+
+    
 }

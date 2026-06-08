@@ -47,6 +47,16 @@
     cursor: pointer;
     text-decoration: none;
 }
+
+.badge{
+    display:inline-block;
+    padding:4px 10px;
+    margin:2px;
+    border-radius:20px;
+    font-size:12px;
+    background:#4f46e5;
+    color:#fff;
+}
   </style>
 </head>
 
@@ -179,7 +189,79 @@
       </div>
 
       <!-- Books container -->
-      <div id="booksWrap"></div>
+      <!--<div id="booksWrap"></div>-->
+
+
+      <div id="booksWrap" class="v-icon">
+
+    @forelse($books as $book)
+
+        <a class="icon-item" href="">
+
+            <div class="icon-img-wrap">
+
+            <img
+              src="{{ asset($book->image) }}"
+              alt="{{ $book->title }}"
+              loading="lazy"
+          >
+
+                <div class="icon-shine"></div>
+
+            </div>
+
+            <abbr
+                class="icon-link"
+                title="{{ $book->title }}"
+            >
+                {{ $book->title }}
+            </abbr>
+
+            <div class="ia">
+                <strong>Author:</strong> {{ $book->author_name }}
+            </div>
+
+            @if($book->categories->count())
+                <div class="ia">
+                    <strong>Categories:</strong>
+                    @foreach($book->categories as $category)
+                        <span class="badge bg-primary me-1">
+                            {{ $category->name }}
+                        </span>
+                    @endforeach
+                </div>
+            @endif
+
+            @if($book->language)
+                <div class="ia">
+                    <strong>Language:</strong> {{ $book->language }}
+                </div>
+            @endif
+
+            @if($book->year)
+                <div class="ia">
+                    <strong>Year:</strong> {{ $book->year }}
+                </div>
+            @endif
+
+            @if($book->about)
+                <div class="ia">
+                    {{ \Illuminate\Support\Str::limit(strip_tags($book->about), 120) }}
+                </div>
+            @endif
+
+        </a>
+
+    @empty
+
+        <div class="empty-state">
+            <i class="fas fa-book-open"></i>
+            <p>No books found.</p>
+        </div>
+
+    @endforelse
+
+</div>
     </main>
   </div>
 
@@ -427,74 +509,8 @@
       });
   </script>-->
 
-  <div class="container py-4">
-
-<h2 class="mb-4">Books</h2>
-
-<div class="row">
-
-    @forelse($books as $book)
-
-        <div class="col-md-4 mb-4">
-
-            <div class="card h-100">
-
-                <div class="card-body">
-
-                    <h5>{{ $book->title }}</h5>
-
-                    <p>
-                        <strong>Author:</strong>
-                        {{ $book->author_name }}
-                    </p>
-
-                    <p>
-                        <strong>Language:</strong>
-                        {{ $book->language }}
-                    </p>
-
-                    <p>
-                        <strong>Categories:</strong><br>
-
-                        @forelse($book->categories as $category)
-
-                            <span class="badge bg-primary">
-                                {{ $category->name }}
-                            </span>
-
-                        @empty
-
-                            <span class="badge bg-secondary">
-                                No Category
-                            </span>
-
-                        @endforelse
-
-                    </p>
-
-                    <p>
-                        {{ \Illuminate\Support\Str::limit($book->about, 150) }}
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    @empty
-
-        <div class="col-12">
-            <div class="alert alert-warning">
-                No books found.
-            </div>
-        </div>
-
-    @endforelse
-
-</div>
-
-</div>
+ 
+ 
   
 </body>
 
