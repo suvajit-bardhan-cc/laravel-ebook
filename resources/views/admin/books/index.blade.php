@@ -20,15 +20,29 @@
             </div>
             <div class="px-5 py-4">
                 <form method="GET" action="{{ route('admin.books.index') }}" class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                         <!-- Search -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Search</label>
                             <input type="text" 
                                    name="search" 
                                    value="{{ request('search') }}"
-                                   placeholder="Title, author, or language..."
+                                   placeholder="Title, author..."
                                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Category</label>
+                            <select name="category" 
+                                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
+                                <option value="">All Categories</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <!-- Language Filter -->
@@ -72,7 +86,6 @@
                                 <option value="author_name" {{ request('sort') == 'author_name' ? 'selected' : '' }}>Author</option>
                                 <option value="language" {{ request('sort') == 'language' ? 'selected' : '' }}>Language</option>
                                 <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Date Added</option>
-                                <option value="updated_at" {{ request('sort') == 'updated_at' ? 'selected' : '' }}>Last Updated</option>
                             </select>
                         </div>
 
@@ -107,11 +120,11 @@
                 <table class="w-full text-sm">
                     <thead class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
                         <tr>
-                            <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">ID</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Cover</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Title</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Author</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Categories</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Language</th>
-                            <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">About</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Added</th>
                             <th class="px-5 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
                         </tr>
@@ -119,16 +132,13 @@
                     <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                         @forelse($books as $book)
                             <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                                <td class="px-5 py-4 text-slate-500 dark:text-slate-400">
-                                    #{{ $book->id }}
+                                <td class="px-5 py-4">
+                                    <img src="{{ $book->cover_image_url }}" 
+                                         alt="{{ $book->title }}"
+                                         class="w-12 h-16 object-cover rounded-lg shadow-sm">
                                 </td>
                                 <td class="px-5 py-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-medium">
-                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.434-3.5 1.196A7.968 7.968 0 015.5 4c1.255 0 2.443.434 3.5 1.196zM4 10.5c0-1.255.434-2.443 1.196-3.5A7.968 7.968 0 015.5 4.5c1.255 0 2.443.434 3.5 1.196A7.968 7.968 0 017.5 9c0 1.255-.434 2.443-1.196 3.5A7.968 7.968 0 014 14.5c-1.255 0-2.443-.434-3.5-1.196A7.968 7.968 0 014 10.5z"/>
-                                            </svg>
-                                        </div>
                                         <div>
                                             <span class="font-medium text-slate-900 dark:text-white">{{ $book->title }}</span>
                                         </div>
@@ -138,14 +148,20 @@
                                     {{ $book->author_name }}
                                 </td>
                                 <td class="px-5 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        @forelse($book->categories as $category)
+                                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
+                                                {{ $category->name }}
+                                            </span>
+                                        @empty
+                                            <span class="text-xs text-slate-400">No categories</span>
+                                        @endforelse
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4">
                                     <span class="px-2 py-1 text-xs rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400">
                                         {{ $book->language ?? 'N/A' }}
                                     </span>
-                                </td>
-                                <td class="px-5 py-4 text-slate-500 dark:text-slate-400 max-w-xs">
-                                    <div class="truncate" title="{{ $book->about }}">
-                                        {{ $book->short_about }}
-                                    </div>
                                 </td>
                                 <td class="px-5 py-4 text-slate-500 dark:text-slate-400 text-sm">
                                     {{ $book->created_at->format('M d, Y') }}

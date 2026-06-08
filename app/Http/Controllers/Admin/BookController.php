@@ -4,17 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of books.
-     */
     public function index(Request $request): View
     {
-        $query = Book::query();
+        $query = Book::with('categories');
 
         // Search filter
         if ($request->filled('search')) {
@@ -23,6 +22,13 @@ class BookController extends Controller
                 $q->where('title', 'like', "%{$search}%")
                   ->orWhere('author_name', 'like', "%{$search}%")
                   ->orWhere('language', 'like', "%{$search}%");
+            });
+        }
+
+        // Category filter
+        if ($request->filled('category')) {
+            $query->whereHas('categories', function ($q) use ($request) {
+                $q->where('categories.id', $request->category);
             });
         }
 
@@ -53,67 +59,93 @@ class BookController extends Controller
             ->whereNotNull('language')
             ->pluck('language');
 
-        return view('admin.books.index', compact('books', 'languages'));
+        // Get all categories for filter
+        $categories = Category::where('status', 'active')->get();
+
+        return view('admin.books.index', compact('books', 'languages', 'categories'));
     }
 
-    /**
-     * Show the form for creating a new book.
-     */
     public function create(): View
     {
-        return view('admin.books.create');
+        $categories = Category::where('status', 'active')->get();
+        return view('admin.books.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created book.
-     */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'author_name' => 'required|string|max:255',
             'language' => 'nullable|string|max:100',
             'about' => 'nullable|string',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
-        // Only select the fields you want to mass assign
-        Book::create($request->only(['title', 'author_name', 'language', 'about']));
+        // Handle cover image upload
+        if ($request->hasFile('cover_image')) {
+            $path = $request->file('cover_image')->store('book-covers', 'public');
+            $validated['cover_image'] = $path;
+        }
+
+        $book = Book::create($validated);
+
+        // Attach categories
+        if ($request->has('categories')) {
+            $book->categories()->attach($request->categories);
+        }
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Book created successfully!');
     }
 
-    /**
-     * Show the form for editing the specified book.
-     */
     public function edit(Book $book): View
     {
-        return view('admin.books.edit', compact('book'));
+        $categories = Category::where('status', 'active')->get();
+        $bookCategories = $book->categories->pluck('id')->toArray();
+        return view('admin.books.edit', compact('book', 'categories', 'bookCategories'));
     }
 
-    /**
-     * Update the specified book.
-     */
     public function update(Request $request, Book $book)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'author_name' => 'required|string|max:255',
             'language' => 'nullable|string|max:100',
             'about' => 'nullable|string',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
-        $book->update($request->only(['title', 'author_name', 'language', 'about']));
+        // Handle cover image upload
+        if ($request->hasFile('cover_image')) {
+            // Delete old image if exists
+            if ($book->cover_image) {
+                Storage::disk('public')->delete($book->cover_image);
+            }
+            $path = $request->file('cover_image')->store('book-covers', 'public');
+            $validated['cover_image'] = $path;
+        }
+
+        $book->update($validated);
+
+        // Sync categories
+        $book->categories()->sync($request->categories ?? []);
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Book updated successfully!');
     }
 
-    /**
-     * Remove the specified book.
-     */
     public function destroy(Book $book)
     {
+        // Delete cover image if exists
+        if ($book->cover_image) {
+            Storage::disk('public')->delete($book->cover_image);
+        }
+        
+        $book->categories()->detach();
         $book->delete();
         
         return redirect()->route('admin.books.index')

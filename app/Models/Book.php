@@ -14,21 +14,16 @@ class Book extends Model
         'author_name',
         'language',
         'about',
+        'cover_image',
     ];
 
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];
-
-    // If you want to customize how dates are formatted
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     /**
-     * The categories that belong to the book.
+     * Get the categories for the book.
      */
     public function categories()
     {
@@ -36,20 +31,23 @@ class Book extends Model
     }
 
     /**
-     * Accessor for truncated about text
+     * Get the cover image URL.
      */
-    public function getShortAboutAttribute(): string
+    public function getCoverImageUrlAttribute(): string
     {
-        return strlen($this->about) > 100 
-            ? substr($this->about, 0, 100) . '...' 
-            : ($this->about ?? '');
+        if ($this->cover_image) {
+            return asset('storage/' . $this->cover_image);
+        }
+        return asset('images/default-book-cover.jpg');
     }
 
     /**
-     * Accessor for formatted created date
+     * Accessor for truncated about text.
      */
-    public function getFormattedCreatedAtAttribute(): string
+    public function getShortAboutAttribute(): string
     {
-        return $this->created_at->format('M d, Y');
+        return strlen($this->about ?? '') > 100 
+            ? substr($this->about, 0, 100) . '...' 
+            : ($this->about ?? '');
     }
 }
