@@ -66,7 +66,11 @@ class AuthController extends Controller
     {
         return view('dashboard1');
     }
-
+    // Bookmark
+    public function bookmark()
+    {
+        return view('pages.bookmark');
+    }
     
 
     // Logout

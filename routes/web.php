@@ -28,3 +28,4 @@ Route::view('/about', 'pages.about')->name('about');
 Route::view('/privacy', 'pages.privacy')->name('privacy');
 Route::view('/terms', 'pages.terms')->name('terms');
 Route::view('/contact', 'pages.contact')->name('contact');
+Route::get('/bookmark', [AuthController::class, 'bookmark'])->name('bookmark');
