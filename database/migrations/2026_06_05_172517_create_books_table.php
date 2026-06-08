@@ -24,10 +24,8 @@ return new class extends Migration
             $table->longText('about')->nullable();
         
             // Cover image path
-            $table->string('image')->nullable();
         
             // Publication year
-            $table->year('year')->nullable();
         
             // featured, popular, bestseller, etc
         

@@ -111,10 +111,10 @@ class AuthController
     // Dashboard
     public function dashboard()
     {
-        $books = Book::with('categories')->get();
-
+        $books = Book::with('categories')->paginate(12);
+    
         $categories = Category::withCount('books')->get();
-
+    
         return view('dashboard1', compact(
             'books',
             'categories'

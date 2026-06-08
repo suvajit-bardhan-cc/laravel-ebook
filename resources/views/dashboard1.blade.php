@@ -201,10 +201,10 @@
             <div class="icon-img-wrap">
 
             <img
-              src="{{ asset($book->image) }}"
-              alt="{{ $book->title }}"
-              loading="lazy"
-          >
+            src="{{ $book->cover_image }}"
+            alt="{{ $book->title }}"
+            loading="lazy"
+        />
 
                 <div class="icon-shine"></div>
 
