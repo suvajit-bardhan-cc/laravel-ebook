@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -71,7 +72,9 @@ class AuthController
     // Dashboard
     public function dashboard()
     {
-        return view('dashboard1');
+        $books = Book::with('categories')->get();
+        return view('dashboard1', compact('books'));
+        //return view('dashboard1');
     }
 
     // Bookmark
