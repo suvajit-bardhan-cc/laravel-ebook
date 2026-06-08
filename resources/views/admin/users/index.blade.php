@@ -108,7 +108,6 @@
                         <tr>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">User</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email</th>
-                            <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Role</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Joined</th>
                             <th class="px-5 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
@@ -126,11 +125,6 @@
                                     </div>
                                 </td>
                                 <td class="px-5 py-4 text-slate-600 dark:text-slate-400">{{ $user->email }}</td>
-                                <td class="px-5 py-4">
-                                    <span class="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
-                                        {{ ucfirst($user->type ?? 'User') }}
-                                    </span>
-                                </td>
                                 <td class="px-5 py-4">
                                     @php
                                         $statusColors = [

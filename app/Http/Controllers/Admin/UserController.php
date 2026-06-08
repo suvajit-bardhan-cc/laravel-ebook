@@ -41,7 +41,7 @@ class UserController extends Controller
         $query->orderBy($sortField, $sortDirection);
 
         // Pagination
-        $users = $query->paginate(15)->withQueryString();
+        $users = $query->where('type', 0)->paginate(15)->withQueryString();
 
         // Get filter options data
         $statuses = ['active', 'inactive', 'banned', 'pending'];

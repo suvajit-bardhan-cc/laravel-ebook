@@ -53,16 +53,54 @@ class AuthController
 
         $credentials = $request->only('email', 'password');
 
+        // First check if user exists with these credentials
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $user = auth()->user();
+            
+            // Check if user is banned
+            if ($user->status === 'banned') {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Your account has been banned. Please contact support.',
+                ]);
+            }
+            
+            // Check if user is inactive
+            if ($user->status === 'inactive') {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Your account is inactive. Please contact support.',
+                ]);
+            }
+            
+            // Check if user is pending (email not verified or waiting for approval)
+            if ($user->status === 'pending') {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Your account is pending approval. You will be notified once approved.',
+                ]);
+            }
+            
+            // Only 'active' users can proceed
+            if ($user->status !== 'active') {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Unable to login due to account status: ' . ucfirst($user->status),
+                ]);
+            }
+            
+            // Regenerate session for security
             $request->session()->regenerate();
 
-            if (auth()->user()->type === 1) {
+            // Redirect based on user type
+            if ($user->type === 1) {
                 return redirect()->intended(route('admin.dashboard'));
             }
 
             return redirect()->intended(route('dashboard'));
         }
 
+        // Authentication failed
         return back()->withErrors([
             'email' => 'These credentials do not match our records.',
         ]);

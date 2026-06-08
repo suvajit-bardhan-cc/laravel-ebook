@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('status', ['active', 'inactive', 'banned', 'pending'])->default('pending');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -44,6 +45,7 @@ return new class extends Migration
                 'name' => 'Admin User',
                 'email' => 'admin@admin.com',
                 'password' => bcrypt('password'),
+                'status' => 'active',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -52,6 +54,7 @@ return new class extends Migration
                 'name' => 'Test User',
                 'email' => 'user@user.com',
                 'password' => bcrypt('password'),
+                'status' => 'active',
                 'created_at' => now(),
                 'updated_at' => now()
             ]
