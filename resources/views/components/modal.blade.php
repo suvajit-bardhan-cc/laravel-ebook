@@ -18,7 +18,7 @@
      aria-modal="true">
     
     <!-- Backdrop -->
-    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" 
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity dark:bg-gray-900 dark:bg-opacity-90" 
          @if($closeOnOverlay) onclick="closeModal('{{ $id }}')" @endif></div>
 
     <!-- Modal Panel -->
@@ -32,7 +32,7 @@
                         {{ $title }}
                     </h3>
                     @if($showClose)
-                    <button onclick="closeModal('{{ $id }}')" 
+                    <button type="button" onclick="closeModal('{{ $id }}')" 
                             class="text-slate-400 hover:text-slate-500 dark:hover:text-slate-300 focus:outline-none">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -58,30 +58,28 @@
 </div>
 
 <script>
-function openModal(modalId) {
+// Make functions global
+window.openModal = function(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
+        
+        // Add escape key listener
+        document.addEventListener('keydown', function escapeHandler(e) {
+            if (e.key === 'Escape') {
+                closeModal(modalId);
+                document.removeEventListener('keydown', escapeHandler);
+            }
+        });
     }
 }
 
-function closeModal(modalId) {
+window.closeModal = function(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.add('hidden');
         document.body.style.overflow = '';
     }
 }
-
-// Close modal with Escape key
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        document.querySelectorAll('[id$="modal"]').forEach(modal => {
-            if (!modal.classList.contains('hidden')) {
-                closeModal(modal.id);
-            }
-        });
-    }
-});
 </script>

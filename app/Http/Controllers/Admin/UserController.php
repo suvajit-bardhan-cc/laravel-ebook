@@ -71,10 +71,19 @@ class UserController extends Controller
         $request->validate([
             'status' => 'required|in:active,inactive,banned,pending'
         ]);
-
+    
         $oldStatus = $user->status;
         $user->status = $request->status;
         $user->save();
+
+        // Check if it's an AJAX request
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => "User status changed from " . ucfirst($oldStatus) . " to " . ucfirst($user->status),
+                'new_status' => $user->status
+            ]);
+        }
 
         return redirect()->route('admin.users.index')
             ->with('success', "User status changed from " . ucfirst($oldStatus) . " to " . ucfirst($user->status));
