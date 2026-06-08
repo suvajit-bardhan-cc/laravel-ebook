@@ -188,7 +188,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
+  <!--<script>
     let currentTab = 'featured';
     let currentView = 'icon';
     let currentCat = 'all';
@@ -425,7 +425,76 @@
         document.getElementById('booksWrap').innerHTML =
           '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Could not load books. Please try again.</p></div>';
       });
-  </script>
+  </script>-->
+
+  <div class="container py-4">
+
+<h2 class="mb-4">Books</h2>
+
+<div class="row">
+
+    @forelse($books as $book)
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h5>{{ $book->title }}</h5>
+
+                    <p>
+                        <strong>Author:</strong>
+                        {{ $book->author_name }}
+                    </p>
+
+                    <p>
+                        <strong>Language:</strong>
+                        {{ $book->language }}
+                    </p>
+
+                    <p>
+                        <strong>Categories:</strong><br>
+
+                        @forelse($book->categories as $category)
+
+                            <span class="badge bg-primary">
+                                {{ $category->name }}
+                            </span>
+
+                        @empty
+
+                            <span class="badge bg-secondary">
+                                No Category
+                            </span>
+
+                        @endforelse
+
+                    </p>
+
+                    <p>
+                        {{ \Illuminate\Support\Str::limit($book->about, 150) }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    @empty
+
+        <div class="col-12">
+            <div class="alert alert-warning">
+                No books found.
+            </div>
+        </div>
+
+    @endforelse
+
+</div>
+
+</div>
   
 </body>
 

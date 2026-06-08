@@ -16,9 +16,7 @@ return new class extends Migration
     
             $table->string('title');
             $table->string('author_name');
-    
-            // Multiple categories stored as JSON
-            $table->json('categories')->nullable();
+        
     
             $table->string('language')->nullable();
     
