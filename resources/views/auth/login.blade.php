@@ -21,13 +21,13 @@
                 <p class="subtitle">Hey, welcome back to your special place</p>
 
                 <form action="/login" method="POST">@csrf
-                    <input class="input" id="email" name="email" type="email" value="{{ old('email') }}" required autofocus>
+                    <input class="input" id="email" name="email" type="email" value="{{ old('email') }}" placeholder="e.g. user@example.com" required autofocus>
 
                     @error('email')
                         <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                     @enderror
 
-                    <input class="input" id="password" name="password" type="password" value="{{ old('password') }}" required>
+                    <input class="input" id="password" name="password" type="password" value="{{ old('password') }}" placeholder="xxxxxxxxxx" required>
 
                     @error('password')
                         <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>

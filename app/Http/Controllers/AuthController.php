@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class AuthController extends Controller
+class AuthController
 {
+    /*
     // Show register form
     public function showRegister()
     {
@@ -34,6 +35,7 @@ class AuthController extends Controller
 
         return redirect()->route('dashboard');
     }
+    */
 
     // Show login form
     public function showLogin()
@@ -53,7 +55,12 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+
+            if (auth()->user()->type === 1) {
+                return redirect()->intended(route('admin.dashboard'));
+            }
+
+            return redirect()->intended(route('dashboard'));
         }
 
         return back()->withErrors([
@@ -66,8 +73,6 @@ class AuthController extends Controller
     {
         return view('dashboard1');
     }
-
-    
 
     // Logout
     public function logout(Request $request)

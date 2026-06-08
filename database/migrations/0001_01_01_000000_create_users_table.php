@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -13,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->tinyInteger('type')->default(0); // 0 = regular user, 1 = admin
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -37,11 +39,22 @@ return new class extends Migration
         });
 
         DB::table('users')->insert([
-            'name' => 'Test User',
-            'email' => 'test@test.com',
-            'password' => bcrypt('password'),
-            'created_at' => now(),
-            'updated_at' => now()
+            [
+                'type' => 1,
+                'name' => 'Admin User',
+                'email' => 'admin@admin.com',
+                'password' => bcrypt('password'),
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'type' => 0,
+                'name' => 'Test User',
+                'email' => 'user@user.com',
+                'password' => bcrypt('password'),
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
         ]);
     }
 
