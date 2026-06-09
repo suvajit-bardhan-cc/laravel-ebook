@@ -109,12 +109,34 @@ class AuthController
     }
 
     // Dashboard
-    public function dashboard()
+    // public function dashboard()
+    // {
+    //     $books = Book::with('categories')->paginate(12);
+    
+    //     $categories = Category::withCount('books')->get();
+    
+    //     return view('dashboard1', compact(
+    //         'books',
+    //         'categories'
+    //     ));
+    // }
+
+
+    public function dashboard(Request $request)
     {
-        $books = Book::with('categories')->paginate(12);
-    
+        $search = $request->search;
+
+        $books = Book::with('categories')
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('author_name', 'like', "%{$search}%");
+                });
+            })
+            ->paginate(12);
+
         $categories = Category::withCount('books')->get();
-    
+
         return view('dashboard1', compact(
             'books',
             'categories'

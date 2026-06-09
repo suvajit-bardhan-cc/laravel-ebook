@@ -11,10 +11,19 @@
         <img src="images/logo.png" alt="eBook Stack">
       </a>
 
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search titles, authors…" oninput="renderBooks()">
-        <button type="button"><i class="fas fa-search"></i> Search</button>
-      </div>
+      <form action="{{ route('dashboard') }}" method="GET" class="search-box">
+        <input 
+            type="text" 
+            id="searchInput" 
+            name="search"
+            placeholder="Search titles, authors…"
+            value="{{ request('search') }}"
+        >
+
+        <button type="submit">
+            <i class="fas fa-search"></i> Search
+        </button>
+    </form>
 
       <div class="hdr-actions">
         <div class="dropdown">

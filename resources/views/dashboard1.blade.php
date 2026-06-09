@@ -201,7 +201,7 @@
             <div class="icon-img-wrap">
 
             <img
-            src="{{ $book->cover_image }}"
+            src="{{ $book->cover_image_url }}"
             alt="{{ $book->title }}"
             loading="lazy"
         />
