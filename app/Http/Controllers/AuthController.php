@@ -143,11 +143,11 @@ class AuthController
             ->withCount('books')
             ->first()?->books_count ?? 0;
 
-        $classicsCount = Category::where('name', 'like',' Classics')
+        $classicsCount = Category::where('name', 'Classic')
             ->withCount('books')
             ->first()?->books_count ?? 0;
 
-        $languageCount = Category::where('name','like', 'Language and Literature')
+        $languageCount = Category::where('name', 'Language and Literature')
             ->withCount('books')
             ->first()?->books_count ?? 0;
 
