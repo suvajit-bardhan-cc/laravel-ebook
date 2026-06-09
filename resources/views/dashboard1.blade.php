@@ -83,12 +83,12 @@
           </div>
           <div class="acc-body" id="acc1">
             <ul class="sb-list">
-              <li><a href="#" data-cat="all" onclick="setCat(event,'all')">All Books <span class="cnt">0</span></a></li>
-              <li><a href="#" data-cat="Fiction Bookshelf" onclick="setCat(event,'Fiction Bookshelf')">Fiction Bookshelf <span class="cnt">0</span></a></li>
-              <li><a href="#" data-cat="Harvard Classics" onclick="setCat(event,'Harvard Classics')">Classics <span class="cnt">0</span></a></li>
+              <li><a href="#" data-cat="all" onclick="setCat(event,'all')">All Books <span class="cnt">{{ $totalBooks }}</span></a></li>
+              <li><a href="#" data-cat="Fiction Bookshelf" onclick="setCat(event,'Fiction Bookshelf')">Fiction Bookshelf <span class="cnt">{{ $fictionCount }}</span></a></li>
+              <li><a href="#" data-cat="Harvard Classics" onclick="setCat(event,'Harvard Classics')">Classics <span class="cnt">{{ $classicsCount }}</span></a></li>
               <li><a href="#" data-cat="Language and Literature" onclick="setCat(event,'Language and Literature')">Language &amp; Literature <span class="cnt">0</span></a></li>
-              <li><a href="#" data-cat="History - Warfare" onclick="setCat(event,'History - Warfare')">War <span class="cnt">0</span></a></li>
-              <li><a href="#" data-cat="Crimes" onclick="setCat(event,'Crimes')">Crimes <span class="cnt">0</span></a></li>
+              <li><a href="#" data-cat="History - Warfare" onclick="setCat(event,'History - Warfare')">War <span class="cnt">{{$warCount}}</span></a></li>
+              <li><a href="#" data-cat="Crimes" onclick="setCat(event,'Crimes')">Crimes <span class="cnt">{{$crimeCount}}</span></a></li>
             </ul>
           </div>
         </div>
@@ -172,7 +172,7 @@
       </div>
 
       <!-- Sort / filter bar -->
-      <div class="sort-bar">
+      <div class="sort-bar" id="sortSel">
         <div class="filter-chips">
           <span class="chip active"><i class="fas fa-check-circle"></i> Total<span id="resCount" class="fw-bold"></span> Results</span>
           <span class="chip d-none" id="activeFilter"><i class="fas fa-filter"></i> All Categories</span>
@@ -194,7 +194,7 @@
 
       <div id="booksWrap" class="v-icon">
 
-    @forelse($books as $book)
+      @forelse($books as $book)
 
         <a class="icon-item" href="">
 

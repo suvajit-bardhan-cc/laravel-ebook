@@ -135,11 +135,40 @@ class AuthController
             })
             ->paginate(12);
 
+        $totalBooks = Book::count();
+
         $categories = Category::withCount('books')->get();
+
+        $fictionCount = Category::where('name', 'like', '%Fiction%')
+            ->withCount('books')
+            ->first()?->books_count ?? 0;
+
+        $classicsCount = Category::where('name', 'like',' Classics')
+            ->withCount('books')
+            ->first()?->books_count ?? 0;
+
+        $languageCount = Category::where('name','like', 'Language and Literature')
+            ->withCount('books')
+            ->first()?->books_count ?? 0;
+
+        $warCount = Category::where('name', 'like','War')
+            ->withCount('books')
+            ->first()?->books_count ?? 0;
+
+        $crimeCount = Category::where('name', 'like','Crime')
+            ->withCount('books')
+            ->first()?->books_count ?? 0;
+        
 
         return view('dashboard1', compact(
             'books',
-            'categories'
+            'categories',
+            'totalBooks',
+            'fictionCount',
+            'classicsCount',
+            'languageCount',
+            'warCount',
+            'crimeCount'
         ));
     }
 
