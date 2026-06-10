@@ -3,7 +3,7 @@
 
         <!-- Welcome banner -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
-        <h2 class="text-base font-semibold text-slate-900 dark:text-white">Welcome back, Suvajit 👋</h2>
+        <h2 class="text-base font-semibold text-slate-900 dark:text-white">Welcome back, {{ auth()->user()->name }} 👋</h2>
         <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Here's what's happening in your workspace today.</p>
         </div>
 

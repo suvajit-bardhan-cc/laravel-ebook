@@ -40,9 +40,9 @@
         <button onclick="toggleProfileMenu()" id="profileBtn"
             class="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
             <div class="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-semibold">
-            SG
+            {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
             </div>
-            <span class="text-sm font-medium text-slate-700 dark:text-slate-200 hidden sm:block">Suvajit</span>
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-200 hidden sm:block">{{ auth()->user()->name }}</span>
             <svg class="w-3.5 h-3.5 text-slate-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
@@ -53,8 +53,8 @@
             class="hidden absolute right-0 mt-1 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-lg
                 border border-slate-200 dark:border-slate-700 py-1 z-50 overflow-hidden">
             <div class="px-4 py-2.5 border-b border-slate-100 dark:border-slate-700">
-            <p class="text-sm font-semibold text-slate-900 dark:text-white">Suvajit Ghosh</p>
-            <p class="text-xs text-slate-400 truncate">suvajit@codeclouds.com</p>
+            <p class="text-sm font-semibold text-slate-900 dark:text-white">{{ auth()->user()->name }}</p>
+            <p class="text-xs text-slate-400 truncate">{{ auth()->user()->email }}</p>
             </div>
             <a href="#" class="dropdown-item">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

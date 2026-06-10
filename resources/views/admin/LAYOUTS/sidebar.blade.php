@@ -82,11 +82,11 @@
     <div class="px-3 py-4 border-t border-slate-200 dark:border-slate-700 shrink-0">
         <div class="flex items-center gap-3 px-2">
             <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-semibold shrink-0">
-            SG
+            {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
             </div>
             <div class="min-w-0">
-            <p class="text-sm font-medium text-slate-900 dark:text-white truncate">Suvajit Ghosh</p>
-            <p class="text-xs text-slate-400 truncate">suvajit@codeclouds.com</p>
+                <p class="text-sm font-medium text-slate-900 dark:text-white truncate">{{ auth()->user()->name }}</p>
+                <p class="text-xs text-slate-400 truncate">{{ auth()->user()->email }}</p>
             </div>
         </div>
     </div>

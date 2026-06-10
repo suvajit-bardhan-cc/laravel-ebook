@@ -13,9 +13,6 @@ class UserController extends Controller
 {
     public function index(Request $request): View
     {
-        // Roles
-        $role = Role::where('slug', 'user')->first();
-
         $query = User::query();
 
         // Search filter
@@ -25,6 +22,17 @@ class UserController extends Controller
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%");
             });
+        }
+
+        // Role filter - default to 'user' role if not specified
+        if ($request->filled('role_id')) {
+            $query->where('role_id', $request->role_id);
+        } else {
+            // Default filter: show only 'user' role
+            $userRole = Role::where('slug', 'user')->first();
+            if ($userRole) {
+                $query->where('role_id', $userRole->id);
+            }
         }
 
         // Status filter
@@ -46,17 +54,19 @@ class UserController extends Controller
         $query->orderBy($sortField, $sortDirection);
 
         // Pagination
-        $users = $query->where('role_id', $role->id)->paginate(15)->withQueryString();
+        $users = $query->paginate(15)->withQueryString();
 
         // Get filter options data
         $statuses = ['active', 'inactive', 'banned', 'pending'];
+        $roles = Role::where('status', 'active')->get();
 
-        return view('admin.users.index', compact('users', 'statuses'));
+        return view('admin.users.index', compact('users', 'statuses', 'roles'));
     }
 
     public function create(): View
     {
-        return view('admin.users.create');
+        $roles = Role::where('status', 'active')->get();
+        return view('admin.users.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -65,7 +75,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role_id' => 'required|in:0,1',
+            'role_id' => 'required|exists:roles,id',
             'status' => 'required|in:active,inactive,banned,pending',
             'email_verified' => 'nullable|boolean',
         ]);
@@ -88,7 +98,8 @@ class UserController extends Controller
 
     public function edit(User $user): View
     {
-        return view('admin.users.edit', compact('user'));
+        $roles = Role::where('status', 'active')->get();
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, User $user)
@@ -97,7 +108,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8',
-            'role_id' => 'required|in:0,1',
+            'role_id' => 'required|exists:roles,id',
             'status' => 'required|in:active,inactive,banned,pending',
         ]);
 

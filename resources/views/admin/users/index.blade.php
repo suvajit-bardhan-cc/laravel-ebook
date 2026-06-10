@@ -60,10 +60,28 @@
                                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </div>
 
+                        <!-- Role Filter -->
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Role</label>
+                            <select name="role_id"
+                                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
+                                @php
+                                    $userRole = $roles->where('slug', 'user')->first();
+                                    $selectedRoleId = request('role_id') ?? ($userRole ? $userRole->id : '');
+                                @endphp
+                                <option value="">All Roles</option>
+                                @foreach($roles as $role)
+                                    <option value="{{ $role->id }}" {{ $selectedRoleId == $role->id ? 'selected' : '' }}>
+                                        {{ $role->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <!-- Status Filter -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Status</label>
-                            <select name="status" 
+                            <select name="status"
                                     class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
                                 <option value="">All Status</option>
                                 @foreach($statuses as $status)
@@ -137,6 +155,7 @@
                         <tr>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">User</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Role</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Joined</th>
                             <th class="px-5 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
@@ -155,6 +174,16 @@
                                 </td>
 
                                 <td class="px-5 py-4 text-slate-600 dark:text-slate-400">{{ $user->email }}</td>
+
+                                <td class="px-5 py-4">
+                                    @if($user->role)
+                                        <span class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+                                            {{ $user->role->name }}
+                                        </span>
+                                    @else
+                                        <span class="text-xs text-slate-500 dark:text-slate-400">No role</span>
+                                    @endif
+                                </td>
 
                                 <td class="px-5 py-4">
                                     @php
@@ -202,7 +231,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-5 py-8 text-center text-slate-500 dark:text-slate-400">
+                                <td colspan="7" class="px-5 py-8 text-center text-slate-500 dark:text-slate-400">
                                     No users found matching your criteria.
                                 </td>
                             </tr>
