@@ -14,8 +14,9 @@ class AdminMiddleware
             return redirect()->route('login');
         }
 
-        if (auth()->user()->type !== 1) {
-            abort(403, 'Access denied. Admins only.');
+        // Method 1: Check if user has admin role using the role slug
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Access denied. Admin privileges required.');
         }
 
         return $next($request);

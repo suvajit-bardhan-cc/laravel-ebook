@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -10,36 +11,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Support\Facades\Crypt;
+
 class AuthController
 {
-    /*
-    // Show register form
-    public function showRegister()
-    {
-        return view('auth.register');
-    }
-
-    // Handle registration
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users',
-            'password' => 'required|min:8|confirmed',
-        ]);
-
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        Auth::login($user);
-
-        return redirect()->route('dashboard');
-    }
-    */
-
     // Show login form
     public function showLogin()
     {
@@ -95,11 +69,13 @@ class AuthController
             // Regenerate session for security
             $request->session()->regenerate();
 
-            // Redirect based on user type
-            if ($user->type === 1) {
+            // Check if user has permission to access admin dashboard
+            // Using the new RBAC system
+            if ($user->hasPermission('access-dashboard')) {
                 return redirect()->intended(route('admin.dashboard'));
             }
 
+            // Regular user dashboard
             return redirect()->intended(route('dashboard'));
         }
 
@@ -109,20 +85,7 @@ class AuthController
         ]);
     }
 
-    // Dashboard
-    // public function dashboard()
-    // {
-    //     $books = Book::with('categories')->paginate(12);
-    
-    //     $categories = Category::withCount('books')->get();
-    
-    //     return view('dashboard1', compact(
-    //         'books',
-    //         'categories'
-    //     ));
-    // }
-
-
+    // User Dashboard (Frontend)
     public function dashboard(Request $request)
     {
         $search = $request->search;
@@ -173,8 +136,7 @@ class AuthController
         ));
     }
 
-
-    // Bookmark
+    // Bookmark page
     public function bookmark()
     {
         return view('pages.bookmark');
@@ -198,13 +160,4 @@ class AuthController
         $request->session()->regenerateToken();
         return redirect()->route('login');
     }
-
-  
-
-
-
-
-
-
-    
 }
