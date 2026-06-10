@@ -1,15 +1,44 @@
 <x-admin-layout>
     <div class="max-w-7xl mx-auto space-y-6">
-        
+
         <!-- Header -->
         <div class="flex justify-between items-center">
             <div>
                 <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Users Management</h1>
                 <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage and filter all registered users</p>
             </div>
-            <a href="{{ route('admin.users.create') }}" 
+            <a href="{{ route('admin.users.create') }}"
                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                 + Add New User
+            </a>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="{{ route('admin.roles.index') }}"
+               class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 hover:shadow-md dark:hover:shadow-slate-900/50 transition-all hover:border-blue-300 dark:hover:border-blue-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-white">Roles Management</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Manage system roles</p>
+                    </div>
+                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="{{ route('admin.permissions.index') }}"
+               class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 hover:shadow-md dark:hover:shadow-slate-900/50 transition-all hover:border-purple-300 dark:hover:border-purple-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-white">Permissions Management</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Manage system permissions</p>
+                    </div>
+                    <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
             </a>
         </div>
 
