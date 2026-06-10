@@ -19,14 +19,14 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('categories')->insert([
-            ['name' => 'Fiction', 'slug' => 'fiction', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Classics', 'slug' => 'classics', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'War', 'slug' => 'war', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Crimes', 'slug' => 'crimes', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Language and Literature', 'slug' => 'language-literature', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Science Fiction', 'slug' => 'science-fiction', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        // DB::table('categories')->insert([
+        //     ['name' => 'Fiction', 'slug' => 'fiction', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
+        //     ['name' => 'Classics', 'slug' => 'classics', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
+        //     ['name' => 'War', 'slug' => 'war', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
+        //     ['name' => 'Crimes', 'slug' => 'crimes', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
+        //     ['name' => 'Language and Literature', 'slug' => 'language-literature', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
+        //     ['name' => 'Science Fiction', 'slug' => 'science-fiction', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
+        // ]);
     }
 
     /**
