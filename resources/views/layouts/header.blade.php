@@ -8,10 +8,10 @@
  <header class="site-header">
     <div class="hdr-top">
       <a href="#" class="logo">
-        <img src="images/logo.png" alt="eBook Stack">
+      <img src="{{ asset('images/logo.png') }}" alt="eBook Stack">
       </a>
 
-      <form action="{{ route('dashboard') }}" method="GET" class="search-box">
+      <!--<form action="{{ route('dashboard') }}" method="GET" class="search-box">
         <input 
             type="text" 
             id="searchInput" 
@@ -23,6 +23,20 @@
         <button type="submit">
             <i class="fas fa-search"></i> Search
         </button>
+    </form>-->
+
+    <form action="{{ route('dashboard') }}" method="GET" class="search-box" id="searchForm">
+      <input
+          type="text"
+          id="searchInput"
+          name="search"
+          placeholder="Search titles, authors…"
+          value="{{ request('search') }}"
+      >
+
+      <button type="submit">
+          <i class="fas fa-search"></i> Search
+      </button>
     </form>
 
       <div class="hdr-actions">
@@ -55,3 +69,18 @@
       </span>
     </div>
   </div>
+
+
+  <script>
+    let debounceTimer;
+
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+            document.getElementById('searchForm').submit();
+        }, 500);
+
+    });
+</script>

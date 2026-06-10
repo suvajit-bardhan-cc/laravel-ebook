@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\Book;
 use App\Models\Category;
+use Illuminate\Support\Facades\Crypt;
 class AuthController
 {
     /*
@@ -177,6 +178,16 @@ class AuthController
     public function bookmark()
     {
         return view('pages.bookmark');
+    }
+
+    // Book details view
+
+    public function show($id)
+    {
+        $bookId = Crypt::decrypt($id);
+        $book = Book::with('categories')->findOrFail($bookId);
+
+        return view('pages.bookview' , compact('book'));
     }
 
     // Logout
