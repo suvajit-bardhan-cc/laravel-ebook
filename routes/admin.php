@@ -5,39 +5,143 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\PermissionController;
 
 Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])
+        ->middleware('permission:access-dashboard')
+        ->name('dashboard');
 
+    // Users Management
     Route::prefix('users/')->name('users.')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('index');
-        Route::get('/create', [UserController::class, 'create'])->name('create');
-        Route::post('/create', [UserController::class, 'store'])->name('store');
-        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
-        Route::put('/{user}/edit', [UserController::class, 'update'])->name('update');
-        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
-        Route::patch('/{user}/status', [UserController::class, 'updateStatus'])->name('update-status');
+        Route::get('/', [UserController::class, 'index'])
+            ->middleware('permission:view-users')
+            ->name('index');
+        Route::get('/create', [UserController::class, 'create'])
+            ->middleware('permission:create-users')
+            ->name('create');
+        Route::post('/create', [UserController::class, 'store'])
+            ->middleware('permission:create-users')
+            ->name('store');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])
+            ->middleware('permission:edit-users')
+            ->name('edit');
+        Route::put('/{user}/edit', [UserController::class, 'update'])
+            ->middleware('permission:edit-users')
+            ->name('update');
+        Route::delete('/{user}', [UserController::class, 'destroy'])
+            ->middleware('permission:delete-users')
+            ->name('destroy');
+        Route::patch('/{user}/status', [UserController::class, 'updateStatus'])
+            ->middleware('permission:edit-users')
+            ->name('update-status');
     });
 
-    Route::resource('books', BookController::class)->names([
-        'index' => 'books.index',
-        'create' => 'books.create',
-        'store' => 'books.store',
-        'edit' => 'books.edit',
-        'update' => 'books.update',
-        'destroy' => 'books.destroy',
-    ]);
+    // Books Management
+    Route::prefix('books')->name('books.')->group(function () {
+        Route::get('/', [BookController::class, 'index'])
+            ->middleware('permission:view-books')
+            ->name('index');
+        Route::get('/create', [BookController::class, 'create'])
+            ->middleware('permission:create-books')
+            ->name('create');
+        Route::post('/', [BookController::class, 'store'])
+            ->middleware('permission:create-books')
+            ->name('store');
+        Route::get('/{book}/edit', [BookController::class, 'edit'])
+            ->middleware('permission:edit-books')
+            ->name('edit');
+        Route::put('/{book}', [BookController::class, 'update'])
+            ->middleware('permission:edit-books')
+            ->name('update');
+        Route::delete('/{book}', [BookController::class, 'destroy'])
+            ->middleware('permission:delete-books')
+            ->name('destroy');
+        Route::get('/{book}', [BookController::class, 'show'])
+            ->middleware('permission:view-books')
+            ->name('show');
+    });
 
-    Route::resource('categories', CategoryController::class)->names([
-        'index' => 'categories.index',
-        'create' => 'categories.create',
-        'store' => 'categories.store',
-        'edit' => 'categories.edit',
-        'update' => 'categories.update',
-        'destroy' => 'categories.destroy',
-    ]);
+    // Categories Management
+    Route::prefix('categories')->name('categories.')->group(function () {
+        Route::get('/', [CategoryController::class, 'index'])
+            ->middleware('permission:view-categories')
+            ->name('index');
+        Route::get('/create', [CategoryController::class, 'create'])
+            ->middleware('permission:create-categories')
+            ->name('create');
+        Route::post('/', [CategoryController::class, 'store'])
+            ->middleware('permission:create-categories')
+            ->name('store');
+        Route::get('/{category}/edit', [CategoryController::class, 'edit'])
+            ->middleware('permission:edit-categories')
+            ->name('edit');
+        Route::put('/{category}', [CategoryController::class, 'update'])
+            ->middleware('permission:edit-categories')
+            ->name('update');
+        Route::delete('/{category}', [CategoryController::class, 'destroy'])
+            ->middleware('permission:delete-categories')
+            ->name('destroy');
+        Route::get('/{category}', [CategoryController::class, 'show'])
+            ->middleware('permission:view-categories')
+            ->name('show');
+        Route::patch('/{category}/status', [CategoryController::class, 'updateStatus'])
+            ->middleware('permission:edit-categories')
+            ->name('update-status');
+    });
 
-    // Status update route
-    Route::patch('/categories/{category}/status', [CategoryController::class, 'updateStatus'])
-        ->name('categories.update-status');
+    // Roles Management
+    Route::prefix('roles')->name('roles.')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])
+            ->middleware('permission:view-roles')
+            ->name('index');
+        Route::get('/create', [RoleController::class, 'create'])
+            ->middleware('permission:create-roles')
+            ->name('create');
+        Route::post('/', [RoleController::class, 'store'])
+            ->middleware('permission:create-roles')
+            ->name('store');
+        Route::get('/{role}', [RoleController::class, 'show'])
+            ->middleware('permission:view-roles')
+            ->name('show');
+        Route::get('/{role}/edit', [RoleController::class, 'edit'])
+            ->middleware('permission:edit-roles')
+            ->name('edit');
+        Route::put('/{role}', [RoleController::class, 'update'])
+            ->middleware('permission:edit-roles')
+            ->name('update');
+        Route::delete('/{role}', [RoleController::class, 'destroy'])
+            ->middleware('permission:delete-roles')
+            ->name('destroy');
+        Route::patch('/{role}/status', [RoleController::class, 'updateStatus'])
+            ->middleware('permission:edit-roles')
+            ->name('update-status');
+    });
+
+    // Permissions Management
+    Route::prefix('permissions')->name('permissions.')->group(function () {
+        Route::get('/', [PermissionController::class, 'index'])
+            ->middleware('permission:view-roles')
+            ->name('index');
+        Route::get('/create', [PermissionController::class, 'create'])
+            ->middleware('permission:create-roles')
+            ->name('create');
+        Route::post('/', [PermissionController::class, 'store'])
+            ->middleware('permission:create-roles')
+            ->name('store');
+        Route::get('/{permission}', [PermissionController::class, 'show'])
+            ->middleware('permission:view-roles')
+            ->name('show');
+        Route::get('/{permission}/edit', [PermissionController::class, 'edit'])
+            ->middleware('permission:edit-roles')
+            ->name('edit');
+        Route::put('/{permission}', [PermissionController::class, 'update'])
+            ->middleware('permission:edit-roles')
+            ->name('update');
+        Route::delete('/{permission}', [PermissionController::class, 'destroy'])
+            ->middleware('permission:delete-roles')
+            ->name('destroy');
+    });
 });
