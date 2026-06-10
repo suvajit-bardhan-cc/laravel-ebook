@@ -31,5 +31,12 @@ Route::view('/contact', 'pages.contact')->name('contact');
 // Bookmark routes
 Route::get('/bookmark', [AuthController::class, 'bookmark'])->name('bookmark');
 
+
+// Book Details page
+
+Route::get('/book/{id}', [AuthController::class, 'show'])
+    ->name('book.details');
+    
+
 // Admin routes
 require __DIR__.'/admin.php';

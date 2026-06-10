@@ -196,70 +196,28 @@
 
       @forelse($books as $book)
 
-        <a class="icon-item" href="">
+      <a class="icon-item" href="{{ route('book.details',  encrypt($book->id)) }}">
 
-            <div class="icon-img-wrap">
+      <div class="icon-img-wrap">
+          <img
+              src="{{ $book->cover_image_url }}"
+              alt="{{ $book->title }}"
+              loading="lazy"
+          />
 
-            <img
-            src="{{ $book->cover_image_url }}"
-            alt="{{ $book->title }}"
-            loading="lazy"
-        />
+          <div class="icon-shine"></div>
+      </div>
 
-                <div class="icon-shine"></div>
+      </a>
 
-            </div>
+@empty
 
-            <abbr
-                class="icon-link"
-                title="{{ $book->title }}"
-            >
-                {{ $book->title }}
-            </abbr>
+<div class="empty-state">
+    <i class="fas fa-book-open"></i>
+    <p>No books found.</p>
+</div>
 
-            <div class="ia">
-                <strong>Author:</strong> {{ $book->author_name }}
-            </div>
-
-            @if($book->categories->count())
-                <div class="ia">
-                    <strong>Categories:</strong>
-                    @foreach($book->categories as $category)
-                        <span class="badge bg-primary me-1">
-                            {{ $category->name }}
-                        </span>
-                    @endforeach
-                </div>
-            @endif
-
-            @if($book->language)
-                <div class="ia">
-                    <strong>Language:</strong> {{ $book->language }}
-                </div>
-            @endif
-
-            @if($book->year)
-                <div class="ia">
-                    <strong>Year:</strong> {{ $book->year }}
-                </div>
-            @endif
-
-            @if($book->about)
-                <div class="ia">
-                    {{ \Illuminate\Support\Str::limit(strip_tags($book->about), 120) }}
-                </div>
-            @endif
-
-        </a>
-
-    @empty
-
-        <div class="empty-state">
-            <i class="fas fa-book-open"></i>
-            <p>No books found.</p>
-        </div>
-
-    @endforelse
+@endforelse
 
 </div>
     </main>

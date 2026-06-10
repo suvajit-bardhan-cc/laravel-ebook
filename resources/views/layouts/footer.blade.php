@@ -8,7 +8,7 @@
         <a href="{{ route('contact') }}">Contact Us</a>
       </div>
       <div class="footer-brand">
-        <a href="index.html"><img src="images/logo.png" alt="eBook Stack" class="footer_logo"></a>
+        <a href="index.html"><img src="{{ asset('images/logo.png') }}" alt="eBook Stack" class="footer_logo"></a>
       </div>
       <span class="footer-copy">&copy; 2026 eBook Stack. All rights reserved.</span>
     </div>
