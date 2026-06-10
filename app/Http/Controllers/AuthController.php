@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Tag;
 
 class AuthController
 {
@@ -97,40 +98,51 @@ class AuthController
                     ->orWhere('author_name', 'like', "%{$search}%");
                 });
             })
-            ->paginate(12);
+            ->paginate(18);
 
-        $totalBooks = Book::count();
-        $categories = Category::withCount('books')->get();
+        // $totalBooks = Book::where('status', 'active')->count();
+        $categories = Category::where('status', 'active')->withCount('books')->get();
 
-        $fictionCount = Category::where('name', 'like', '%Fiction%')
+        // Get popular categories (top 6 by book count)
+        $popularCategories = Category::where('status', 'active')
             ->withCount('books')
-            ->first()?->books_count ?? 0;
+            ->orderByDesc('books_count')
+            ->limit(5)
+            ->get();
 
-        $classicsCount = Category::where('name', 'Classic')
-            ->withCount('books')
-            ->first()?->books_count ?? 0;
+        $allTags = Tag::where('status', 'active')->get();
 
-        $languageCount = Category::where('name', 'Language and Literature')
-            ->withCount('books')
-            ->first()?->books_count ?? 0;
+        // $fictionCount = Category::where('name', 'like', '%Fiction%')
+        //     ->withCount('books')
+        //     ->first()?->books_count ?? 0;
 
-        $warCount = Category::where('name', 'like','War')
-            ->withCount('books')
-            ->first()?->books_count ?? 0;
+        // $classicsCount = Category::where('name', 'Classic')
+        //     ->withCount('books')
+        //     ->first()?->books_count ?? 0;
 
-        $crimeCount = Category::where('name', 'like','Crime')
-            ->withCount('books')
-            ->first()?->books_count ?? 0;
+        // $languageCount = Category::where('name', 'Language and Literature')
+        //     ->withCount('books')
+        //     ->first()?->books_count ?? 0;
 
-        return view('dashboard1', compact(
+        // $warCount = Category::where('name', 'like','War')
+        //     ->withCount('books')
+        //     ->first()?->books_count ?? 0;
+
+        // $crimeCount = Category::where('name', 'like','Crime')
+        //     ->withCount('books')
+        //     ->first()?->books_count ?? 0;
+
+        return view('dashboard', compact(
             'books',
             'categories',
-            'totalBooks',
-            'fictionCount',
-            'classicsCount',
-            'languageCount',
-            'warCount',
-            'crimeCount'
+            // 'totalBooks',
+            'popularCategories',
+            'allTags',
+            // 'fictionCount',
+            // 'classicsCount',
+            // 'languageCount',
+            // 'warCount',
+            // 'crimeCount'
         ));
     }
 
