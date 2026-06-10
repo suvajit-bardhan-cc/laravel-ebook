@@ -33,7 +33,7 @@ class AuthController
         // First check if user exists with these credentials
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $user = auth()->user();
-            
+
             // Check if user is banned
             if ($user->status === 'banned') {
                 Auth::logout();
@@ -41,7 +41,7 @@ class AuthController
                     'email' => 'Your account has been banned. Please contact support.',
                 ]);
             }
-            
+
             // Check if user is inactive
             if ($user->status === 'inactive') {
                 Auth::logout();
@@ -49,7 +49,7 @@ class AuthController
                     'email' => 'Your account is inactive. Please contact support.',
                 ]);
             }
-            
+
             // Check if user is pending (email not verified or waiting for approval)
             if ($user->status === 'pending') {
                 Auth::logout();
@@ -57,7 +57,7 @@ class AuthController
                     'email' => 'Your account is pending approval. You will be notified once approved.',
                 ]);
             }
-            
+
             // Only 'active' users can proceed
             if ($user->status !== 'active') {
                 Auth::logout();
@@ -65,7 +65,7 @@ class AuthController
                     'email' => 'Unable to login due to account status: ' . ucfirst($user->status),
                 ]);
             }
-            
+
             // Regenerate session for security
             $request->session()->regenerate();
 
@@ -100,7 +100,6 @@ class AuthController
             ->paginate(12);
 
         $totalBooks = Book::count();
-
         $categories = Category::withCount('books')->get();
 
         $fictionCount = Category::where('name', 'like', '%Fiction%')
@@ -122,7 +121,6 @@ class AuthController
         $crimeCount = Category::where('name', 'like','Crime')
             ->withCount('books')
             ->first()?->books_count ?? 0;
-        
 
         return view('dashboard1', compact(
             'books',
@@ -143,7 +141,6 @@ class AuthController
     }
 
     // Book details view
-
     public function show($id)
     {
         $bookId = Crypt::decrypt($id);
