@@ -47,10 +47,7 @@
                 <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}">
             </a>
 
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search titles, authors…" oninput="renderBooks()">
-                <button type="button"><i class="fas fa-search"></i> Search</button>
-            </div>
+            @livewire('book-search')
 
             <div class="hdr-actions">
                 <div class="dropdown">
