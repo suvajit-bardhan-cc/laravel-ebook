@@ -2,7 +2,7 @@
     <div class="hero-strip">
         <div class="inner">
             <span class="bc">
-                <a href="{{ route('dashboard') }}">{{ config('app.name') }}</a> &rsaquo; 
+                <a href="{{ route('dashboard') }}">{{ config('app.name') }}</a> &rsaquo;
                 <span id="bcLabel">My Bookmarks</span>
             </span>
         </div>
@@ -11,15 +11,11 @@
     <div class="page-wrap">
         <main class="content" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
             <!-- Header -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div class="text-center d-flex justify-content-center align-items-center">
                 <div>
                     <h1 style="font-size: 28px; font-weight: bold; color: #1f2937; margin: 0;">My Bookmarks</h1>
                     <p style="font-size: 14px; color: #6b7280; margin-top: 8px;">Manage your saved books</p>
                 </div>
-                <a href="{{ route('dashboard') }}"
-                   style="padding: 10px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-weight: 500; color: #374151; background: white; text-decoration: none; transition: all 0.2s;">
-                    ← Back to Books
-                </a>
             </div>
 
             <!-- Bookmarks Table -->
