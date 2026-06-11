@@ -50,14 +50,41 @@
     <div id="booksWrap" class="v-{{ $viewType }}">
         @if($books->count() > 0)
             @foreach ($books as $book)
-                <a class="{{ $viewType }}-item" href="{{ route('books.show', $book->id) }}">
-                    <div class="{{ $viewType }}-img-wrap">
-                        <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" loading="lazy">
-                        <div class="{{ $viewType }}-shine"></div>
+                @if ($viewType == 'icon') 
+                    <a class="{{ $viewType }}-item" href="{{ route('books.show', encrypt($book->id)) }}">
+                        <div class="{{ $viewType }}-img-wrap">
+                            <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" loading="lazy">
+                            <div class="{{ $viewType }}-shine"></div>
+                        </div>
+                        <abbr class="{{ $viewType }}-link" title="{{ $book->title }}">{{ $book->title }}</abbr>
+                        <div class="ia">{{ $book->author_name }}</div>
+                    </a>
+                @else
+                    <div class="list-item align-items-center">
+                        <div class="list-thumb">
+                            <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" loading="lazy">
+                        </div>
+                        <div class="list-info">
+                            <h4>{{ $book->title }}</h4>
+                            <p class="la">
+                                <span><i class="fas fa-user fa-xs me-1"></i>{{ $book->author_name }}</span>
+                            </p>
+                            <p class="ld">{{ Str::limit($book->description, 150) }}</p>
+                            @if($book->categories->count() > 0)
+                                <div class="tag-row">
+                                    @foreach($book->categories as $category)
+                                        <span class="tag">{{ $category->name }}</span>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                        <div class="list-actions">
+                            <a class="btn-read-now text-decoration-none" href="{{ route('books.show', encrypt($book->id)) }}">
+                                <i class="fas fa-book-reader me-1"></i>Read
+                            </a>
+                        </div>
                     </div>
-                    <abbr class="{{ $viewType }}-link" title="{{ $book->title }}">{{ $book->title }}</abbr>
-                    <div class="ia">{{ $book->author_name }}</div>
-                </a>
+                @endif
             @endforeach
         @else
             <div class="no-results">
