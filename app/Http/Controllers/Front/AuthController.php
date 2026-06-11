@@ -86,12 +86,6 @@ class AuthController
         ]);
     }
 
-    // Bookmark page
-    public function bookmark()
-    {
-        return view('pages.bookmark');
-    }
-
     // Logout
     public function logout(Request $request)
     {

@@ -39,6 +39,14 @@ class Book extends Model
     }
 
     /**
+     * Get the user bookmarks for this book.
+     */
+    public function userBookmarks()
+    {
+        return $this->hasMany(UserBookmark::class);
+    }
+
+    /**
      * Get the cover image URL.
      */
     public function getCoverImageUrlAttribute(): string

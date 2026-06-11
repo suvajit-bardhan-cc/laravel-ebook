@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name') }}</title>
 
     <link rel="shortcut icon" href="{{ asset('images/1731092903.jpg') }}" type="image/png">
@@ -19,6 +20,26 @@
     @livewireStyles
 
     <style>
+        /* Sticky Footer */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        body > *:not(.site-footer) {
+            flex: 1 0 auto;
+        }
+
+        .site-footer {
+            flex-shrink: 0;
+        }
+
         #booksWrap.v-gallery { display: block; width: 100%; padding: 8px 24px 48px; box-sizing: border-box; }
         .gallery-slider { width: 100%; }
         .gallery-slider .slick-list { overflow: hidden; }
@@ -57,9 +78,9 @@
 
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size:13px">
                         <li>
-                            <a class="dropdown-item" href="{{ route('bookmark') }}">
+                            <a class="dropdown-item" href="{{ route('bookmarks.index') }}">
                                 <i class="fas fa-bookmark fa-fw me-2 text-muted"></i>
-                                Bookmark
+                                Bookmarks
                             </a>
                         </li>
                     </ul>

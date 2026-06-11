@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\AuthController;
 use App\Http\Controllers\Front\DashboardController;
 use App\Http\Controllers\Front\BookController;
+use App\Http\Controllers\Front\BookmarkController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,6 +23,14 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+
+    // Book routes (auth required to see the book page)
+    Route::get('/books/{encryptedId}', [BookController::class, 'show'])->name('books.show');
+
+    // Bookmark API routes (auth required for toggle, but check handles unauthenticated users)
+    Route::post('/api/bookmarks/{book}/toggle', [BookmarkController::class, 'toggle'])->name('bookmarks.toggle');
+    Route::get('/api/bookmarks/{book}/check', [BookmarkController::class, 'isBookmarked'])->name('bookmarks.check');
 });
 
 // Static Page routes
@@ -30,16 +39,10 @@ Route::view('/privacy', 'front.pages.privacy')->name('privacy');
 Route::view('/terms', 'front.pages.terms')->name('terms');
 Route::view('/contact', 'front.pages.contact')->name('contact');
 
-// Bookmark routes
-Route::get('/bookmark', [AuthController::class, 'bookmark'])->name('bookmark');
-
 // Book Details page
 // Route::get('/book/{id}', [AuthController::class, 'show'])
 //     ->name('book.details')
 //     ->where('id', '[0-9]+');
-
-Route::get('/books/{encryptedId}', [BookController::class, 'show'])
-    ->name('books.show');
 
 // Admin routes
 require __DIR__.'/admin.php';

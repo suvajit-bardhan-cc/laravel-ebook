@@ -1,141 +1,171 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Book View - eBook Stack</title>
-
-    <link rel="shortcut icon" href="images/1731092903.jpg" type="image/png">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="css/style.css?v=1" rel="stylesheet">
-    <style>
-        .btn-logout {
-    appearance: none;
-    -webkit-appearance: none;
-    background: none;
-    border: none;
-    outline: none;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-    text-decoration: none;
-}
-    </style>
-
-</head>
-
-<body>
-
-    <!-- ═══ HEADER ══════════════════════════════════════════════ -->
-    @include('layouts.header')
-    <!-- ═══ PAGE BODY ════════════════════════════════════════════ -->
-    <div class="bookmark-wrap">
-        <div class="page_content">
-            <h1 class="text-center">Bookmarks</h1>
-            <div class="bookmark_card">
-                <div class="table-wrapper">
-                    <table class="table table-bordered align-middle">
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Category</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="bookmarkTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
+<x-app-layout>
+    <div class="hero-strip">
+        <div class="inner">
+            <span class="bc">
+                <a href="{{ route('dashboard') }}">{{ config('app.name') }}</a> &rsaquo; 
+                <span id="bcLabel">My Bookmarks</span>
+            </span>
         </div>
     </div>
 
-    <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
-    @include('layouts.footer')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="page-wrap">
+        <main class="content" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+            <!-- Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <div>
+                    <h1 style="font-size: 28px; font-weight: bold; color: #1f2937; margin: 0;">My Bookmarks</h1>
+                    <p style="font-size: 14px; color: #6b7280; margin-top: 8px;">Manage your saved books</p>
+                </div>
+                <a href="{{ route('dashboard') }}"
+                   style="padding: 10px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-weight: 500; color: #374151; background: white; text-decoration: none; transition: all 0.2s;">
+                    ← Back to Books
+                </a>
+            </div>
+
+            <!-- Bookmarks Table -->
+            <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden;">
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; font-size: 14px; border-collapse: collapse;">
+                        <thead style="background: #f9fafb; border-bottom: 1px solid #e5e7eb;">
+                            <tr>
+                                <th style="padding: 12px 20px; text-align: left; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Cover</th>
+                                <th style="padding: 12px 20px; text-align: left; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Title</th>
+                                <th style="padding: 12px 20px; text-align: left; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Author</th>
+                                <th style="padding: 12px 20px; text-align: left; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Categories</th>
+                                <th style="padding: 12px 20px; text-align: right; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($bookmarks as $bookmark)
+                                <tr class="bookmark-row" data-book-id="{{ $bookmark->book->id }}" style="border-bottom: 1px solid #f3f4f6; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f9fafb'" onmouseout="this.style.backgroundColor=''">
+                                    <td style="padding: 16px 20px;">
+                                        <img src="{{ $bookmark->book->cover_image_url }}"
+                                             alt="{{ $bookmark->book->title }}"
+                                             style="width: 50px; height: 70px; object-fit: cover; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                    </td>
+                                    <td style="padding: 16px 20px;">
+                                        <a href="{{ route('books.show', encrypt($bookmark->book->id)) }}"
+                                           style="font-weight: 600; color: #1f2937; text-decoration: none; transition: color 0.2s;">
+                                            {{ $bookmark->book->title }}
+                                        </a>
+                                    </td>
+                                    <td style="padding: 16px 20px; color: #6b7280;">
+                                        {{ $bookmark->book->author_name }}
+                                    </td>
+                                    <td style="padding: 16px 20px;">
+                                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                            @forelse($bookmark->book->categories as $category)
+                                                <span style="display: inline-block; background-color: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 12px; font-size: 12px;">
+                                                    {{ $category->name }}
+                                                </span>
+                                            @empty
+                                                <span style="color: #9ca3af; font-size: 12px;">No categories</span>
+                                            @endforelse
+                                        </div>
+                                    </td>
+                                    <td style="padding: 16px 20px; text-align: right;">
+                                        <button class="remove-bookmark-btn"
+                                                data-book-id="{{ $bookmark->book->id }}"
+                                                style="background: none; border: none; color: #dc2626; cursor: pointer; font-size: 16px; padding: 6px 12px; transition: color 0.2s;"
+                                                title="Remove bookmark"
+                                                onmouseover="this.style.color='#991b1b'"
+                                                onmouseout="this.style.color='#dc2626'">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" style="padding: 40px 20px; text-align: center;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                                            <i class="fas fa-bookmark" style="font-size: 48px; color: #d1d5db;"></i>
+                                            <p style="color: #6b7280; margin: 0; font-size: 14px;">No bookmarks yet. <a href="{{ route('dashboard') }}" style="color: #0066cc; text-decoration: none;">Browse books</a> to add bookmarks</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                @if($bookmarks->count() > 0)
+                    <div style="padding: 16px 20px; border-top: 1px solid #e5e7eb;">
+                        {{ $bookmarks->links() }}
+                    </div>
+                @endif
+            </div>
+        </main>
+    </div>
+
     <script>
-        const BOOKMARKS_KEY = 'ebookStackBookmarks';
+        // Handle remove bookmark button clicks
+        document.querySelectorAll('.remove-bookmark-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
 
-        function getBookmarks() {
-            const saved = localStorage.getItem(BOOKMARKS_KEY);
-            try {
-                return saved ? JSON.parse(saved) : [];
-            } catch {
-                return [];
-            }
-        }
+                if (!confirm('Remove this bookmark?')) {
+                    return;
+                }
 
-        function saveBookmarks(bookmarks) {
-            localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarks));
-        }
+                const bookId = btn.dataset.bookId;
+                const row = document.querySelector(`tr[data-book-id="${bookId}"]`);
 
-        function escapeHtml(value) {
-            return String(value)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
-        }
+                // Disable button and show loading state
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
-        function renderBookmarks() {
-            const bookmarks = getBookmarks();
-            const tbody = document.getElementById('bookmarkTableBody');
-            if (!tbody) return;
+                try {
+                    const response = await fetch(`/api/bookmarks/${bookId}/toggle`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
 
-            if (!bookmarks.length) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No bookmarks yet.</td></tr>';
-                return;
-            }
+                    const data = await response.json();
 
-            tbody.innerHTML = bookmarks.map(book => `
-                <tr data-id="${book.id}">
-                    <td class="text-center">
-                        <img src="${escapeHtml(book.img)}" alt="${escapeHtml(book.title)}" class="book-img">
-                    </td>
-                    <td>
-                        <a href="${escapeHtml(book.href)}" class="book_title">${escapeHtml(book.title)}</a>
-                    </td>
-                    <td>${escapeHtml(book.author)}</td>
-                    <td>
-                        <span class="category-badge">${escapeHtml(book.cat)}</span>
-                    </td>
-                    <td class="text-center">
-                        <button class="remove-btn" type="button" data-id="${book.id}">
-                            <i class="fa-solid fa-trash me-1"></i>
-                            Remove Bookmark
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function removeBookmark(id) {
-            const bookmarks = getBookmarks().filter(item => item.id !== Number(id));
-            saveBookmarks(bookmarks);
-            renderBookmarks();
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderBookmarks();
-            const tbody = document.getElementById('bookmarkTableBody');
-            if (!tbody) return;
-            tbody.addEventListener('click', event => {
-                const button = event.target.closest('.remove-btn');
-                if (!button) return;
-                removeBookmark(button.dataset.id);
+                    if (data.success) {
+                        // Fade out and remove the row
+                        row.style.animation = 'fadeOut 0.3s ease-out';
+                        setTimeout(() => {
+                            row.remove();
+                            // Check if table is empty
+                            const tableBody = document.querySelector('tbody');
+                            if (tableBody.querySelectorAll('tr').length === 0) {
+                                location.reload();
+                            }
+                        }, 300);
+                    } else {
+                        alert(data.message || 'Error removing bookmark');
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error removing bookmark');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                }
             });
         });
-    </script>
-</body>
 
-</html>
+        // Add fade out animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                from {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(20px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</x-app-layout>
