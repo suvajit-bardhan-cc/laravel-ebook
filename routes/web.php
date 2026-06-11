@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
 
     // Book routes (auth required to see the book page)
     Route::get('/books/{encryptedId}', [BookController::class, 'show'])->name('books.show');
+    Route::get('/books/{encryptedId}/read', [BookController::class, 'read'])->name('books.read');
 
     // Bookmark API routes (auth required for toggle, but check handles unauthenticated users)
     Route::post('/api/bookmarks/{book}/toggle', [BookmarkController::class, 'toggle'])->name('bookmarks.toggle');

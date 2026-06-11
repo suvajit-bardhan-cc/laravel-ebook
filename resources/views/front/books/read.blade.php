@@ -69,44 +69,12 @@
         <main class="content">
             <div id="bookContent">
                 <div class="book-view-container">
-                    <div class="book-cover-section">
-                        <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" class="book-cover-img">
-                        <div class="book-cover-actions">
-                            <a href="{{ route('books.read', encrypt($book->id)) }}" class="btn-read-online">
-                                <i class="fas fa-play me-2"></i>Read Online
-                            </a>
-                            <button class="btn-bookmark" id="bookmarkBtn" data-book-id="{{ $book->id }}">
-                                <i class="far fa-bookmark me-2"></i><span id="bookmarkText">Add Bookmark</span>
-                            </button>
-                        </div>
-                    </div>
-
                     <div class="book-details-section">
                         <h1 class="book-title">{{ $book->title }}</h1>
                         <p class="book-author">by <strong>{{ $book->author_name }}</strong></p>
 
-                        <div class="book-meta">
-                            <div class="meta-item">
-                                <span class="meta-label">Language</span>
-                                <span class="meta-value">{{ $book->language ?? 'English' }}</span>
-                            </div>
-                            @if($book->published_year)
-                                <div class="meta-item">
-                                    <span class="meta-label">Year</span>
-                                    <span class="meta-value">{{ $book->published_year }}</span>
-                                </div>
-                            @endif
-                            @if($book->categories->count() > 0)
-                                <div class="meta-item">
-                                    <span class="meta-label">Category</span>
-                                    <span class="meta-value">{{ $book->categories->pluck('name')->join(', ') }}</span>
-                                </div>
-                            @endif
-                        </div>
-
-                        <div class="book-description">
-                            <h3 class="book-description-title">About This Book</h3>
-                            <p class="book-description-text">{{ $book->about }}</p>
+                        <div class="mt-3">
+                            {!! $book->content ?? $book->about !!}
                         </div>
                     </div>
                 </div>

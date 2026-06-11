@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('language')->nullable();
             $table->longText('about')->nullable();
             $table->string('cover_image')->nullable();
+            $table->longText('content')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });

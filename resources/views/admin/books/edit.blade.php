@@ -1,4 +1,7 @@
 <x-admin-layout>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+
     <div class="max-w-4xl mx-auto space-y-6">
         
         <!-- Header -->
@@ -197,6 +200,20 @@
                         <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
                             <span id="charCount">{{ strlen($book->about ?? '') }}</span> characters entered
                         </p>
+                    </div>
+
+                    <!-- Content Field -->
+                    <div>
+                        <label for="content" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            Content
+                        </label>
+                        {{-- <textarea name="content" 
+                                  id="content"
+                                  rows="10"
+                                  class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('content') border-red-500 @enderror">{{ old('content', $book->content) }}</textarea> --}}
+                        @error('content')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
