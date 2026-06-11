@@ -114,8 +114,8 @@
  }
 
  .search-box {
-   flex: 1;
-   max-width: 480px;
+   /* flex: 1; */
+   max-width: auto;
    display: flex;
    align-items: center;
    background: #f2f5f9;
@@ -1489,4 +1489,3 @@
 }
  }
 
- 
