@@ -82,7 +82,7 @@ class DashboardBooks extends Component
             default => $query->latest('id'),
         };
 
-        return $query->paginate(20);
+        return $query->paginate(18);
     }
 
     public function render()

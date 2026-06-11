@@ -33,9 +33,11 @@ Route::get('/bookmark', [AuthController::class, 'bookmark'])->name('bookmark');
 
 
 // Book Details page
-
 Route::get('/book/{id}', [AuthController::class, 'show'])
     ->name('book.details');
+
+Route::get('/books/{id}', [AuthController::class, 'show'])
+    ->name('books.show');
     
 
 // Admin routes
