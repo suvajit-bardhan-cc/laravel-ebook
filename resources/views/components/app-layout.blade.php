@@ -83,6 +83,12 @@
                                 Bookmarks
                             </a>
                         </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('profile.index') }}">
+                                <i class="fas fa-user me-2 text-muted"></i>
+                                My Profile
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
