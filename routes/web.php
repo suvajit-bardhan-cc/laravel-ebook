@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Front\AuthController;
+use App\Http\Controllers\Front\DashboardController;
+use App\Http\Controllers\Front\BookController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,28 +20,26 @@ Route::middleware('guest')->group(function () {
 
 // Auth routes
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 // Static Page routes
-Route::view('/about', 'pages.about')->name('about');
-Route::view('/privacy', 'pages.privacy')->name('privacy');
-Route::view('/terms', 'pages.terms')->name('terms');
-Route::view('/contact', 'pages.contact')->name('contact');
+Route::view('/about', 'front.pages.about')->name('about');
+Route::view('/privacy', 'front.pages.privacy')->name('privacy');
+Route::view('/terms', 'front.pages.terms')->name('terms');
+Route::view('/contact', 'front.pages.contact')->name('contact');
 
 // Bookmark routes
 Route::get('/bookmark', [AuthController::class, 'bookmark'])->name('bookmark');
 
-
 // Book Details page
-Route::get('/book/{id}', [AuthController::class, 'show'])
-    ->name('book.details')
-    ->where('id', '[0-9]+');
+// Route::get('/book/{id}', [AuthController::class, 'show'])
+//     ->name('book.details')
+//     ->where('id', '[0-9]+');
 
-Route::get('/books/{encryptedId}', [AuthController::class, 'show'])
+Route::get('/books/{encryptedId}', [BookController::class, 'show'])
     ->name('books.show');
-    
 
 // Admin routes
 require __DIR__.'/admin.php';

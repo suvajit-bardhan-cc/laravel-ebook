@@ -2,7 +2,7 @@
     <div class="hero-strip">
         <div class="inner">
             <span class="bc">
-                <a href="{{ route('dashboard') }}">{{ config('app.name') }}</a> &rsaquo; <span id="bcLabel">{{ $books->total() }} eBooks</span>
+                <a href="{{ route('dashboard') }}">{{ config('app.name') }}</a> &rsaquo; <span id="bcLabel">{{ $books->total() }} {{ config('app.name') }}</span>
             </span>
         </div>
     </div>

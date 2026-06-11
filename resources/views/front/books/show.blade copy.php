@@ -16,31 +16,30 @@
 
     <style>
 
-.btn-logout {
-    appearance: none;
-    -webkit-appearance: none;
-    background: none;
-    border: none;
-    outline: none;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-    text-decoration: none;
-}
+        .btn-logout {
+            appearance: none;
+            -webkit-appearance: none;
+            background: none;
+            border: none;
+            outline: none;
+            padding: 0;
+            margin: 0;
+            font: inherit;
+            color: inherit;
+            cursor: pointer;
+            text-decoration: none;
+        }
 
-.badge{
-    display:inline-block;
-    padding:4px 10px;
-    margin:2px;
-    border-radius:20px;
-    font-size:12px;
-    background:#4f46e5;
-    color:#fff;
-}
+        .badge{
+            display:inline-block;
+            padding:4px 10px;
+            margin:2px;
+            border-radius:20px;
+            font-size:12px;
+            background:#4f46e5;
+            color:#fff;
+        }
     </style>
-
 </head>
 
 <body>

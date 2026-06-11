@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 use App\Models\User;
 use App\Models\Role;
@@ -86,79 +86,10 @@ class AuthController
         ]);
     }
 
-    // User Dashboard (Frontend)
-    public function dashboard(Request $request)
-    {
-        $search = $request->search;
-
-        $books = Book::with('categories')
-            ->when($search, function ($query) use ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('author_name', 'like', "%{$search}%");
-                });
-            })
-            ->paginate(18);
-
-        // $totalBooks = Book::where('status', 'active')->count();
-        $categories = Category::where('status', 'active')->withCount('books')->get();
-
-        // Get popular categories (top 6 by book count)
-        $popularCategories = Category::where('status', 'active')
-            ->withCount('books')
-            ->orderByDesc('books_count')
-            ->limit(5)
-            ->get();
-
-        $allTags = Tag::where('status', 'active')->get();
-
-        // $fictionCount = Category::where('name', 'like', '%Fiction%')
-        //     ->withCount('books')
-        //     ->first()?->books_count ?? 0;
-
-        // $classicsCount = Category::where('name', 'Classic')
-        //     ->withCount('books')
-        //     ->first()?->books_count ?? 0;
-
-        // $languageCount = Category::where('name', 'Language and Literature')
-        //     ->withCount('books')
-        //     ->first()?->books_count ?? 0;
-
-        // $warCount = Category::where('name', 'like','War')
-        //     ->withCount('books')
-        //     ->first()?->books_count ?? 0;
-
-        // $crimeCount = Category::where('name', 'like','Crime')
-        //     ->withCount('books')
-        //     ->first()?->books_count ?? 0;
-
-        return view('dashboard', compact(
-            'books',
-            'categories',
-            // 'totalBooks',
-            'popularCategories',
-            'allTags',
-            // 'fictionCount',
-            // 'classicsCount',
-            // 'languageCount',
-            // 'warCount',
-            // 'crimeCount'
-        ));
-    }
-
     // Bookmark page
     public function bookmark()
     {
         return view('pages.bookmark');
-    }
-
-    // Book details view
-    public function show($id)
-    {
-        $bookId = Crypt::decrypt($id);
-        $book = Book::with('categories')->findOrFail($bookId);
-
-        return view('pages.bookview' , compact('book'));
     }
 
     // Logout
