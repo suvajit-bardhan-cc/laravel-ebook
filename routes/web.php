@@ -5,6 +5,7 @@ use App\Http\Controllers\Front\AuthController;
 use App\Http\Controllers\Front\DashboardController;
 use App\Http\Controllers\Front\BookController;
 use App\Http\Controllers\Front\BookmarkController;
+use App\Http\Controllers\Front\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,6 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/edit', [ProfileController::class, 'update'])->name('profile.update');
 
     // Book routes (auth required to see the book page)
     Route::get('/books/{encryptedId}', [BookController::class, 'show'])->name('books.show');
