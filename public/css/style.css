@@ -1196,6 +1196,55 @@
    display: inline-block;
  }
 
+ /* ══ PAGINATION ════════════════════════════════════════════ */
+ .pagination {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 4px;
+   margin: 24px 0 8px;
+   padding: 0;
+   list-style: none;
+   align-items: center;
+ }
+
+ .pagination .page-item .page-link {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   min-width: 36px;
+   height: 36px;
+   padding: 0 10px;
+   border-radius: 8px;
+   border: 1px solid #dce3ed;
+   background: var(--card-bg);
+   color: var(--blue);
+   font-size: 0.875rem;
+   font-weight: 500;
+   text-decoration: none;
+   transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+   box-shadow: none;
+ }
+
+ .pagination .page-item .page-link:hover {
+   background: var(--accent);
+   border-color: var(--green);
+   color: var(--green2);
+ }
+
+ .pagination .page-item.active .page-link {
+   background: var(--blue);
+   border-color: var(--blue);
+   color: #fff;
+   box-shadow: 0 2px 8px rgba(3, 85, 123, 0.25);
+ }
+
+ .pagination .page-item.disabled .page-link {
+   background: #f0f2f5;
+   border-color: #e2e8f0;
+   color: #aab4c0;
+   pointer-events: none;
+ }
+
  /* ══ RESPONSIVE ════════════════════════════════════════════ */
  @media (max-width: 1100px) {
    .sidebar {

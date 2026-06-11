@@ -1,6 +1,5 @@
 <x-admin-layout>
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
 
     <div class="max-w-4xl mx-auto space-y-6">
         
@@ -207,10 +206,9 @@
                         <label for="content" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                             Content
                         </label>
-                        {{-- <textarea name="content" 
+                        <textarea name="content"
                                   id="content"
-                                  rows="10"
-                                  class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('content') border-red-500 @enderror">{{ old('content', $book->content) }}</textarea> --}}
+                                  rows="10">{{ old('content', $book->content) }}</textarea>
                         @error('content')
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                         @enderror
@@ -233,6 +231,36 @@
     </div>
 
     @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+    <script>
+        // Summernote rich text editor
+        $(document).ready(function() {
+            $('#content').summernote({
+                height: 400,
+                placeholder: 'Write book content here...',
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'hr']],
+                    ['view', ['fullscreen', 'codeview', 'undo', 'redo']],
+                ],
+                callbacks: {
+                    onInit: function() {
+                        // Apply dark mode styles if active
+                        if (document.documentElement.classList.contains('dark')) {
+                            $('.note-editor').css({'background':'#1e293b','border-color':'#475569'});
+                            $('.note-editable').css({'background':'#0f172a','color':'#f1f5f9'});
+                            $('.note-toolbar').css({'background':'#1e293b','border-color':'#475569'});
+                        }
+                    }
+                }
+            });
+        });
+    </script>
     <script>
         // Image preview
         const imageInput = document.getElementById('cover_image');
