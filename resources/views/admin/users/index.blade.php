@@ -53,8 +53,8 @@
                         <!-- Search -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Search</label>
-                            <input type="text" 
-                                   name="search" 
+                            <input type="text"
+                                   name="search"
                                    value="{{ request('search') }}"
                                    placeholder="Name or email..."
                                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -95,8 +95,8 @@
                         <!-- Date From -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Date From</label>
-                            <input type="date" 
-                                   name="date_from" 
+                            <input type="date"
+                                   name="date_from"
                                    value="{{ request('date_from') }}"
                                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
                         </div>
@@ -104,8 +104,8 @@
                         <!-- Date To -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Date To</label>
-                            <input type="date" 
-                                   name="date_to" 
+                            <input type="date"
+                                   name="date_to"
                                    value="{{ request('date_to') }}"
                                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
                         </div>
@@ -113,7 +113,7 @@
                         <!-- Sort By -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Sort By</label>
-                            <select name="sort" 
+                            <select name="sort"
                                     class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
                                 <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name</option>
                                 <option value="email" {{ request('sort') == 'email' ? 'selected' : '' }}>Email</option>
@@ -125,7 +125,7 @@
                         <!-- Direction -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Direction</label>
-                            <select name="direction" 
+                            <select name="direction"
                                     class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
                                 <option value="asc" {{ request('direction') == 'asc' ? 'selected' : '' }}>Ascending</option>
                                 <option value="desc" {{ request('direction') == 'desc' ? 'selected' : '' }}>Descending</option>
@@ -134,11 +134,11 @@
                     </div>
 
                     <div class="flex justify-end gap-3">
-                        <a href="{{ route('admin.users.index') }}" 
+                        <a href="{{ route('admin.users.index') }}"
                            class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                             Clear Filters
                         </a>
-                        <button type="submit" 
+                        <button type="submit"
                                 class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
                             Apply Filters
                         </button>
@@ -200,10 +200,10 @@
                                             class="px-2 py-1 text-xs rounded-full cursor-pointer transition-all hover:scale-105 bg-{{ $color }}-100 dark:bg-{{ $color }}-900/30 text-{{ $color }}-700 dark:text-{{ $color }}-400">
                                         {{ ucfirst($user->status) }}
                                     </button>
-                                    
+
                                     <!-- Status Change Modal for this user -->
-                                    <x-status-change-modal 
-                                        :user-id="$user->id" 
+                                    <x-status-change-modal
+                                        :user-id="$user->id"
                                         :current-status="$user->status" />
                                 </td>
                                 <td class="px-5 py-4 text-slate-500 dark:text-slate-400 text-sm">
@@ -211,17 +211,17 @@
                                 </td>
                                 <td class="px-5 py-4 text-right">
                                     <div class="flex justify-end gap-2">
-                                        <a href="{{ route('admin.users.edit', $user) }}" 
+                                        <a href="{{ route('admin.users.edit', $user) }}"
                                            class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
                                             Edit
                                         </a>
-                                        <form action="{{ route('admin.users.destroy', $user) }}" 
-                                              method="POST" 
+                                        <form action="{{ route('admin.users.destroy', $user) }}"
+                                              method="POST"
                                               class="inline"
                                               onsubmit="return confirm('Are you sure you want to delete this user?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" 
+                                            <button type="submit"
                                                     class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors">
                                                 Delete
                                             </button>
