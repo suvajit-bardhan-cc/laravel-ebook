@@ -34,12 +34,26 @@
                         <!-- Category Filter -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Category</label>
-                            <select name="category" 
+                            <select name="category"
                                     class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
                                 <option value="">All Categories</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Tag Filter -->
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Tag</label>
+                            <select name="tag"
+                                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
+                                <option value="">All Tags</option>
+                                @foreach($tags as $tag)
+                                    <option value="{{ $tag->id }}" {{ request('tag') == $tag->id ? 'selected' : '' }}>
+                                        {{ $tag->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -124,6 +138,7 @@
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Title</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Author</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Categories</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tags</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Language</th>
                             <th class="px-5 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Added</th>
                             <th class="px-5 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
@@ -159,6 +174,17 @@
                                     </div>
                                 </td>
                                 <td class="px-5 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        @forelse($book->tags as $tag)
+                                            <span class="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+                                                {{ $tag->name }}
+                                            </span>
+                                        @empty
+                                            <span class="text-xs text-slate-400">No tags</span>
+                                        @endforelse
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4">
                                     <span class="px-2 py-1 text-xs rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400">
                                         {{ $book->language ?? 'N/A' }}
                                     </span>
@@ -188,7 +214,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-5 py-8 text-center text-slate-500 dark:text-slate-400">
+                                <td colspan="8" class="px-5 py-8 text-center text-slate-500 dark:text-slate-400">
                                     <div class="flex flex-col items-center gap-2">
                                         <svg class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>

@@ -92,7 +92,7 @@
                         <label for="categories" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                             Categories
                         </label>
-                        <select name="categories[]" 
+                        <select name="categories[]"
                                 id="categories"
                                 multiple
                                 class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -106,6 +106,58 @@
                         @error('categories')
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                         @enderror
+                    </div>
+
+                    <!-- Tags Field -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="tags" class="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                Tags
+                            </label>
+                            <button type="button" id="addNewTagBtn" class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                                + Add New Tag
+                            </button>
+                        </div>
+                        <select name="tags[]"
+                                id="tags"
+                                multiple
+                                class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            @foreach($tags as $tag)
+                                <option value="{{ $tag->id }}" {{ in_array($tag->id, $bookTags) ? 'selected' : '' }}>
+                                    {{ $tag->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Hold Ctrl/Cmd to select multiple tags</p>
+                        @error('tags')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- New Tag Modal -->
+                    <div id="newTagModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div class="bg-white dark:bg-slate-800 rounded-lg p-6 max-w-sm w-full mx-4">
+                            <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Create New Tag</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="newTagName" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                                        Tag Name <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text"
+                                           id="newTagName"
+                                           placeholder="Enter tag name"
+                                           class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div class="flex gap-3 justify-end">
+                                    <button type="button" id="cancelTagBtn" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">
+                                        Cancel
+                                    </button>
+                                    <button type="button" id="createTagBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
+                                        Create Tag
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Language Field -->
@@ -169,7 +221,7 @@
         const imageInput = document.getElementById('cover_image');
         const imagePreview = document.getElementById('imagePreview');
         const previewImg = document.getElementById('previewImg');
-        
+
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -184,18 +236,95 @@
                 previewImg.src = '';
             }
         });
-        
+
         // Character counter
         const aboutTextarea = document.getElementById('about');
         const charCountSpan = document.getElementById('charCount');
-        
+
         function updateCharCount() {
             charCountSpan.textContent = aboutTextarea.value.length;
         }
-        
+
         if (aboutTextarea) {
             aboutTextarea.addEventListener('input', updateCharCount);
         }
+
+        // Tag modal functionality
+        const addNewTagBtn = document.getElementById('addNewTagBtn');
+        const newTagModal = document.getElementById('newTagModal');
+        const cancelTagBtn = document.getElementById('cancelTagBtn');
+        const createTagBtn = document.getElementById('createTagBtn');
+        const newTagName = document.getElementById('newTagName');
+        const tagsSelect = document.getElementById('tags');
+
+        addNewTagBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            newTagModal.classList.remove('hidden');
+            newTagName.focus();
+        });
+
+        cancelTagBtn.addEventListener('click', () => {
+            newTagModal.classList.add('hidden');
+            newTagName.value = '';
+        });
+
+        createTagBtn.addEventListener('click', () => {
+            const tagName = newTagName.value.trim();
+            if (!tagName) {
+                alert('Please enter a tag name');
+                return;
+            }
+
+            // Create FormData for AJAX request
+            const formData = new FormData();
+            formData.append('name', tagName);
+            formData.append('_token', document.querySelector('input[name="_token"]').value);
+
+            fetch('{{ route("admin.tags.store") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Add new tag to select
+                    const option = document.createElement('option');
+                    option.value = data.tag.id;
+                    option.textContent = data.tag.name;
+                    option.selected = true;
+                    tagsSelect.appendChild(option);
+
+                    // Close modal and reset
+                    newTagModal.classList.add('hidden');
+                    newTagName.value = '';
+                } else {
+                    alert('Error creating tag: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error creating tag');
+            });
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !newTagModal.classList.contains('hidden')) {
+                newTagModal.classList.add('hidden');
+                newTagName.value = '';
+            }
+        });
+
+        // Close modal when clicking outside
+        newTagModal.addEventListener('click', (e) => {
+            if (e.target === newTagModal) {
+                newTagModal.classList.add('hidden');
+                newTagName.value = '';
+            }
+        });
     </script>
     @endpush
 </x-admin-layout>

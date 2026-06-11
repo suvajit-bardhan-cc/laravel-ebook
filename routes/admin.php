@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 
@@ -62,6 +63,13 @@ Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(fun
         Route::get('/{book}', [BookController::class, 'show'])
             ->middleware('permission:view-books')
             ->name('show');
+    });
+
+    // Tags Management
+    Route::prefix('tags')->name('tags.')->group(function () {
+        Route::post('/', [TagController::class, 'store'])
+            ->middleware('permission:create-books')
+            ->name('store');
     });
 
     // Categories Management

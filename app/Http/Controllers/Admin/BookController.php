@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
@@ -13,7 +14,7 @@ class BookController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Book::with('categories');
+        $query = Book::with('categories', 'tags');
 
         // Search filter
         if ($request->filled('search')) {
@@ -29,6 +30,13 @@ class BookController extends Controller
         if ($request->filled('category')) {
             $query->whereHas('categories', function ($q) use ($request) {
                 $q->where('categories.id', $request->category);
+            });
+        }
+
+        // Tag filter
+        if ($request->filled('tag')) {
+            $query->whereHas('tags', function ($q) use ($request) {
+                $q->where('tags.id', $request->tag);
             });
         }
 
@@ -62,13 +70,17 @@ class BookController extends Controller
         // Get all categories for filter
         $categories = Category::where('status', 'active')->get();
 
-        return view('admin.books.index', compact('books', 'languages', 'categories'));
+        // Get all tags for filter
+        $tags = Tag::where('status', 'active')->get();
+
+        return view('admin.books.index', compact('books', 'languages', 'categories', 'tags'));
     }
 
     public function create(): View
     {
         $categories = Category::where('status', 'active')->get();
-        return view('admin.books.create', compact('categories'));
+        $tags = Tag::where('status', 'active')->get();
+        return view('admin.books.create', compact('categories', 'tags'));
     }
 
     public function store(Request $request)
@@ -81,6 +93,8 @@ class BookController extends Controller
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
         ]);
 
         // Handle cover image upload
@@ -96,6 +110,11 @@ class BookController extends Controller
             $book->categories()->attach($request->categories);
         }
 
+        // Attach tags
+        if ($request->has('tags')) {
+            $book->tags()->attach($request->tags);
+        }
+
         return redirect()->route('admin.books.index')
             ->with('success', 'Book created successfully!');
     }
@@ -104,7 +123,9 @@ class BookController extends Controller
     {
         $categories = Category::where('status', 'active')->get();
         $bookCategories = $book->categories->pluck('id')->toArray();
-        return view('admin.books.edit', compact('book', 'categories', 'bookCategories'));
+        $tags = Tag::where('status', 'active')->get();
+        $bookTags = $book->tags->pluck('id')->toArray();
+        return view('admin.books.edit', compact('book', 'categories', 'bookCategories', 'tags', 'bookTags'));
     }
 
     public function update(Request $request, Book $book)
@@ -117,6 +138,8 @@ class BookController extends Controller
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
         ]);
 
         // Handle cover image upload
@@ -133,6 +156,9 @@ class BookController extends Controller
 
         // Sync categories
         $book->categories()->sync($request->categories ?? []);
+
+        // Sync tags
+        $book->tags()->sync($request->tags ?? []);
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Book updated successfully!');

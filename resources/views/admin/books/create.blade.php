@@ -79,7 +79,7 @@
                         <label for="categories" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                             Categories
                         </label>
-                        <select name="categories[]" 
+                        <select name="categories[]"
                                 id="categories"
                                 multiple
                                 class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -91,6 +91,27 @@
                         </select>
                         <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Hold Ctrl/Cmd to select multiple categories</p>
                         @error('categories')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Tags Field -->
+                    <div>
+                        <label for="tags" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            Tags
+                        </label>
+                        <select name="tags[]"
+                                id="tags"
+                                multiple
+                                class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            @foreach($tags as $tag)
+                                <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tags', [])) ? 'selected' : '' }}>
+                                    {{ $tag->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Hold Ctrl/Cmd to select multiple tags</p>
+                        @error('tags')
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
