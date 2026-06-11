@@ -23,7 +23,7 @@
                     <div class="acc-body" id="acc1">
                         <ul class="sb-list">
                             <li>
-                                <a href="#" data-cat="all" onclick="setCat(event,'all')" class="active">
+                                <a href="#" data-cat="all" onclick="selectCategory(event, 'all')" class="cat-link active">
                                     All Books <span class="cnt">{{ $books->total() }}</span>
                                 </a>
                             </li>
@@ -31,7 +31,7 @@
                             @if($popularCategories->count() > 0)
                                 @foreach($popularCategories as $category)
                                     <li>
-                                        <a href="#" data-cat="{{ $category->name }}" onclick="setCat(event,'{{ $category->name }}')">
+                                        <a href="#" data-cat="{{ $category->name }}" onclick="selectCategory(event, '{{ $category->name }}')" class="cat-link">
                                             {{ $category->name }} <span class="cnt">{{ $category->books_count }}</span>
                                         </a>
                                     </li>
@@ -50,7 +50,7 @@
                         <ul class="sb-list">
                             @foreach ($categories as $category)
                                 <li>
-                                    <a href="#" data-cat="{{ $category->name }}" onclick="setCat(event,'{{ $category->name }}')">
+                                    <a href="#" data-cat="{{ $category->name }}" onclick="selectCategory(event, '{{ $category->name }}')" class="cat-link">
                                         {{ $category->name }} <span class="cnt">{{ $category->books_count }}</span>
                                     </a>
                                 </li>
@@ -63,61 +63,23 @@
 
         <!-- ─── MAIN ───────────────────────────────────────────── -->
         <main class="content">
-            <!-- Tabs with count badges + view labels -->
-            <div class="panel-hdr">
-                <nav class="tab-group">
-                    @foreach ($allTags as $index => $tag)
-                        <button class="tab-btn {{ $index == 0 ? 'active' : '' }}" onclick="setTab(event,'{{ $tag->slug }}')">
-                            <i class="{{ $tag->fa_icon }}"></i> {{ $tag->name }}
-                            <span class="tbadge" id="tbFeatured">{{ $tag->books->count() }}</span>
-                        </button>
-                    @endforeach
-                </nav>
-                <div class="view-group">
-                    {{-- <button class="vbtn d-none" title="Gallery" onclick="setView('gallery')">
-                        <i class="fas fa-th-large"></i><span>Gallery</span>
-                    </button> --}}
-                    <button class="vbtn" title="List" onclick="setView('list')">
-                        <i class="fas fa-list"></i><span>List</span>
-                    </button>
-                    <button class="vbtn active" title="Icon" onclick="setView('icon')">
-                        <i class="fas fa-th"></i><span>Icon</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Sort / filter bar -->
-            <div class="sort-bar">
-                <div class="filter-chips">
-                    <span class="chip active"><i class="fas fa-check-circle"></i> Total<span id="resCount" class="fw-bold">{{ $books->total() }}</span> Results</span>
-                    <span class="chip d-none" id="activeFilter"><i class="fas fa-filter"></i> All Categories</span>
-                    </div>
-                    <div class="sort-wrap">
-                    <label for="sortSel"><i class="fas fa-sort-amount-down me-1"></i>Order by:</label>
-                    <select id="sortSel" onchange="renderBooks()">
-                        <option value="default">Default</option>
-                        <option value="title-az">Title A-Z</option>
-                        <option value="title-za">Title Z-A</option>
-                        <option value="author">Author A-Z</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Books container -->
-            <div id="booksWrap" class="v-icon">
-                @foreach ($books as $book)
-                    <a class="icon-item" href="book-view.html?id=1">
-                        <div class="icon-img-wrap">
-                            <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" loading="lazy">
-                            <div class="icon-shine"></div>
-                        </div>
-                        <abbr class="icon-link" title="{{ $book->title }}">{{ $book->title }}</abbr>
-                        <div class="ia">{{ $book->author_name }}</div>
-                    </a>
-                @endforeach
-
-                {{ $books->links() }}
-            </div>
+            <!-- Livewire Books Component -->
+            @livewire('dashboard-books')
         </main>
     </div>
+
+    <script>
+        function selectCategory(event, category) {
+            event.preventDefault();
+
+            // Update active state in sidebar
+            document.querySelectorAll('.cat-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.closest('a').classList.add('active');
+
+            // Dispatch Livewire event to update the books component
+            Livewire.dispatch('selectCategory', { category: category });
+        }
+    </script>
 </x-app-layout>
