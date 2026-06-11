@@ -19,8 +19,10 @@ class DashboardBooks extends Component
 
     protected $queryString = ['selectedCategory' => ['except' => 'all']];
 
-    public function mount()
+    public function mount($selectedCategory = 'all')
     {
+        $this->selectedCategory = $selectedCategory;
+
         $tags = Tag::whereHas('books')->get();
         if ($tags->count() > 0) {
             $this->selectedTag = $tags->first()->slug;

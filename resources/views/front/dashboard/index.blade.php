@@ -23,7 +23,7 @@
                     <div class="acc-body" id="acc1">
                         <ul class="sb-list">
                             <li>
-                                <a href="#" data-cat="all" onclick="selectCategory(event, 'all')" class="cat-link active">
+                                <a href="#" data-cat="all" onclick="selectCategory(event, 'all')" class="cat-link {{ !request('selectedCategory') || request('selectedCategory') === 'all' ? 'active' : '' }}">
                                     All Books <span class="cnt">{{ $books->total() }}</span>
                                 </a>
                             </li>
@@ -31,7 +31,7 @@
                             @if($popularCategories->count() > 0)
                                 @foreach($popularCategories as $category)
                                     <li>
-                                        <a href="#" data-cat="{{ $category->name }}" onclick="selectCategory(event, '{{ $category->name }}')" class="cat-link">
+                                        <a href="#" data-cat="{{ $category->name }}" onclick="selectCategory(event, '{{ $category->name }}')" class="cat-link {{ request('selectedCategory') === $category->name ? 'active' : '' }}">
                                             {{ $category->name }} <span class="cnt">{{ $category->books_count }}</span>
                                         </a>
                                     </li>
@@ -50,7 +50,7 @@
                         <ul class="sb-list">
                             @foreach ($categories as $category)
                                 <li>
-                                    <a href="#" data-cat="{{ $category->name }}" onclick="selectCategory(event, '{{ $category->name }}')" class="cat-link">
+                                    <a href="#" data-cat="{{ $category->name }}" onclick="selectCategory(event, '{{ $category->name }}')" class="cat-link {{ request('selectedCategory') === $category->name ? 'active' : '' }}">
                                         {{ $category->name }} <span class="cnt">{{ $category->books_count }}</span>
                                     </a>
                                 </li>
@@ -64,7 +64,7 @@
         <!-- ─── MAIN ───────────────────────────────────────────── -->
         <main class="content">
             <!-- Livewire Books Component -->
-            @livewire('dashboard-books')
+            @livewire('dashboard-books', ['selectedCategory' => request('selectedCategory', 'all')])
         </main>
     </div>
 

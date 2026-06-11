@@ -24,7 +24,7 @@
                     <div class="acc-body" id="acc1">
                         <ul class="sb-list">
                             <li>
-                                <a href="#" data-cat="all" onclick="selectCategory(event, 'all')" class="cat-link active">
+                                <a href="{{ route('dashboard') }}" class="cat-link">
                                     All Books <span class="cnt">{{ $allBooksCount }}</span>
                                 </a>
                             </li>
@@ -32,7 +32,7 @@
                             @if($popularCategories->count() > 0)
                                 @foreach($popularCategories as $category)
                                     <li>
-                                        <a href="#" data-cat="{{ $category->name }}" onclick="selectCategory(event, '{{ $category->name }}')" class="cat-link">
+                                        <a href="{{ route('dashboard', ['selectedCategory' => $category->name]) }}" class="cat-link">
                                             {{ $category->name }} <span class="cnt">{{ $category->books_count }}</span>
                                         </a>
                                     </li>
@@ -42,29 +42,23 @@
                     </div>
                 </div>
 
-                <!-- Fiction accordion -->
+                <!-- All Categories accordion -->
                 <div class="acc-card">
                     <div class="acc-head open" id="accHead2" onclick="toggleAcc('acc2','accHead2')">
-                        <span class="aht"><i class="fas fa-book"></i>Fiction</span>
+                        <span class="aht"><i class="fas fa-book"></i>All Categories</span>
                         <i class="fas fa-chevron-down acc-chev"></i>
                     </div>
                     <div class="acc-body" id="acc2">
                         <ul class="sb-list">
-                            <li><a href="index.html?cat=Fiction" data-cat="Fiction">Fiction <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Science-Fiction+%26+Fantasy" data-cat="Science-Fiction & Fantasy">Science-Fiction &amp; Fantasy <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Historical+Fiction" data-cat="Historical Fiction">Historical Fiction <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Science+Fiction" data-cat="Science Fiction">Science Fiction <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Adventure" data-cat="Adventure">Adventure <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Mystery+Fiction" data-cat="Mystery Fiction">Mystery Fiction <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Children%27s+Fiction" data-cat="Children's Fiction">Children's Fiction <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Harvard+Classics" data-cat="Harvard Classics">Harvard Classics <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Classical+Antiquity" data-cat="Classical Antiquity">Classical Antiquity <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Literature" data-cat="Literature">Literature <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Language+%26+Communication" data-cat="Language & Communication">Language &amp; Communication <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Teaching+%26+Education" data-cat="Teaching & Education">Teaching &amp; Education <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=History+-+Warfare" data-cat="History - Warfare">History - Warfare <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Crime+Fiction" data-cat="Crime Fiction">Crime Fiction <span class="cnt">0</span></a></li>
-                            <li><a href="index.html?cat=Crime+Nonfiction" data-cat="Crime Nonfiction">Crime Nonfiction <span class="cnt">0</span></a></li>
+                            @forelse($categories as $category)
+                                <li>
+                                    <a href="{{ route('dashboard', ['selectedCategory' => $category->name]) }}" class="cat-link">
+                                        {{ $category->name }} <span class="cnt">{{ $category->books_count }}</span>
+                                    </a>
+                                </li>
+                            @empty
+                                <li><p style="padding: 10px; color: #999;">No categories available</p></li>
+                            @endforelse
                         </ul>
                     </div>
                 </div>
@@ -113,7 +107,8 @@
                             <p class="book-description-text">{{ $book->about }}</p>
                         </div>
                     </div>
-                </div></div>
+                </div>
+            </div>
         </main>
     </div>
 </x-app-layout>
