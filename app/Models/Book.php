@@ -14,6 +14,7 @@ class Book extends Model
         'author_name',
         'language',
         'about',
+        'content',
         'cover_image',
     ];
 

@@ -12,6 +12,8 @@ class DashboardBooks extends Component
 {
     use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
+
     public $selectedCategory = 'all';
     public $selectedTag = null;
     public $sortBy = 'default';
