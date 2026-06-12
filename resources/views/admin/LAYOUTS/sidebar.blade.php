@@ -5,7 +5,7 @@
     <!-- Logo -->
     <div class="flex items-center gap-2.5 px-5 h-16 border-b border-slate-200 dark:border-slate-700 shrink-0">
         {{-- <span class="font-semibold text-slate-900 dark:text-white text-sm tracking-tight">AdminBase</span> --}}
-         <img src="{{ asset('images/logo.png') }}" alt="Logo" class="brightness-0 invert">
+         <img src="{{ asset('images/logo.png') }}" alt="Logo" class="dark:brightness-0 dark:invert">
     </div>
 
     <!-- Nav links -->

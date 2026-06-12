@@ -50,7 +50,7 @@
     <div id="booksWrap" class="v-{{ $viewType }}">
         @if($books->count() > 0)
             @foreach ($books as $book)
-                @if ($viewType == 'icon') 
+                @if ($viewType == 'icon')
                     <a class="{{ $viewType }}-item" href="{{ route('books.show', encrypt($book->id)) }}">
                         <div class="{{ $viewType }}-img-wrap">
                             <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" loading="lazy">

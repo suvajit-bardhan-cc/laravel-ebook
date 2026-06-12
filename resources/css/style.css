@@ -1374,7 +1374,7 @@
    flex-wrap: wrap;
  }
 
- .book-cover-actions button {
+ .book-cover-actions a.btn-read-online {
    flex: 1;
    min-width: 130px;
    padding: 10px 15px;

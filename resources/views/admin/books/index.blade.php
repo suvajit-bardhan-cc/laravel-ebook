@@ -1,13 +1,13 @@
 <x-admin-layout>
     <div class="max-w-7xl mx-auto space-y-6">
-        
+
         <!-- Header -->
         <div class="flex justify-between items-center">
             <div>
                 <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Books Management</h1>
                 <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage your book collection</p>
             </div>
-            <a href="{{ route('admin.books.create') }}" 
+            <a href="{{ route('admin.books.create') }}"
                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                 + Add New Book
             </a>
@@ -58,8 +58,8 @@
                         <!-- Search -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Search</label>
-                            <input type="text" 
-                                   name="search" 
+                            <input type="text"
+                                   name="search"
                                    value="{{ request('search') }}"
                                    placeholder="Title, author..."
                                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -96,7 +96,7 @@
                         <!-- Language Filter -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Language</label>
-                            <select name="language" 
+                            <select name="language"
                                     class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
                                 <option value="">All Languages</option>
                                 @foreach($languages as $language)
@@ -110,8 +110,8 @@
                         <!-- Date From -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Date From</label>
-                            <input type="date" 
-                                   name="date_from" 
+                            <input type="date"
+                                   name="date_from"
                                    value="{{ request('date_from') }}"
                                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
                         </div>
@@ -119,8 +119,8 @@
                         <!-- Date To -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Date To</label>
-                            <input type="date" 
-                                   name="date_to" 
+                            <input type="date"
+                                   name="date_to"
                                    value="{{ request('date_to') }}"
                                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
                         </div>
@@ -128,7 +128,7 @@
                         <!-- Sort By -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Sort By</label>
-                            <select name="sort" 
+                            <select name="sort"
                                     class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
                                 <option value="title" {{ request('sort') == 'title' ? 'selected' : '' }}>Title</option>
                                 <option value="author_name" {{ request('sort') == 'author_name' ? 'selected' : '' }}>Author</option>
@@ -140,7 +140,7 @@
                         <!-- Direction -->
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Direction</label>
-                            <select name="direction" 
+                            <select name="direction"
                                     class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500">
                                 <option value="asc" {{ request('direction') == 'asc' ? 'selected' : '' }}>Ascending</option>
                                 <option value="desc" {{ request('direction') == 'desc' ? 'selected' : '' }}>Descending</option>
@@ -149,11 +149,11 @@
                     </div>
 
                     <div class="flex justify-end gap-3">
-                        <a href="{{ route('admin.books.index') }}" 
+                        <a href="{{ route('admin.books.index') }}"
                            class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                             Clear Filters
                         </a>
-                        <button type="submit" 
+                        <button type="submit"
                                 class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
                             Apply Filters
                         </button>
@@ -182,7 +182,7 @@
                         @forelse($books as $book)
                             <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                                 <td class="px-5 py-4">
-                                    <img src="{{ $book->cover_image_url }}" 
+                                    <img src="{{ $book->cover_image_url }}"
                                          alt="{{ $book->title }}"
                                          class="w-12 h-16 object-cover rounded-lg shadow-sm">
                                 </td>
@@ -228,17 +228,17 @@
                                 </td>
                                 <td class="px-5 py-4 text-right">
                                     <div class="flex justify-end gap-2">
-                                        <a href="{{ route('admin.books.edit', $book) }}" 
+                                        <a href="{{ route('admin.books.edit', $book) }}"
                                            class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
                                             Edit
                                         </a>
-                                        <form action="{{ route('admin.books.destroy', $book) }}" 
-                                              method="POST" 
+                                        <form action="{{ route('admin.books.destroy', $book) }}"
+                                              method="POST"
                                               class="inline"
                                               onsubmit="return confirm('Are you sure you want to delete this book?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" 
+                                            <button type="submit"
                                                     class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors">
                                                 Delete
                                             </button>
@@ -263,8 +263,53 @@
             </div>
 
             <!-- Pagination -->
-            <div class="px-5 py-4 border-t border-slate-100 dark:border-slate-700">
-                {{ $books->links() }}
+            <div class="px-5 py-4 border-t border-slate-100 dark:border-slate-700 flex justify-center">
+                @if ($books->hasPages())
+                    <nav class="flex items-center gap-1">
+                        {{-- Previous Page --}}
+                        @if ($books->onFirstPage())
+                            <button disabled class="px-2 py-2 text-slate-400 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded cursor-not-allowed opacity-50">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                        @else
+                            <a href="{{ $books->previousPageUrl() }}" class="px-2 py-2 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded hover:bg-slate-50 dark:hover:bg-slate-700">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </a>
+                        @endif
+
+                        {{-- Page Numbers --}}
+                        @foreach ($books->getUrlRange(1, $books->lastPage()) as $page => $url)
+                            @if ($page == $books->currentPage())
+                                <span class="px-3 py-2 w-10 text-center text-sm font-semibold text-white bg-red-500 dark:bg-red-600 rounded border border-red-500 dark:border-red-600">
+                                    {{ $page }}
+                                </span>
+                            @else
+                                <a href="{{ $url }}" class="px-3 py-2 w-10 text-center text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded hover:bg-slate-50 dark:hover:bg-slate-700">
+                                    {{ $page }}
+                                </a>
+                            @endif
+                        @endforeach
+
+                        {{-- Next Page --}}
+                        @if ($books->hasMorePages())
+                            <a href="{{ $books->nextPageUrl() }}" class="px-2 py-2 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded hover:bg-slate-50 dark:hover:bg-slate-700">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        @else
+                            <button disabled class="px-2 py-2 text-slate-400 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded cursor-not-allowed opacity-50">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        @endif
+                    </nav>
+                @endif
             </div>
         </div>
     </div>
