@@ -8,7 +8,8 @@ use App\Http\Controllers\Front\BookmarkController;
 use App\Http\Controllers\Front\ProfileController;
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return redirect()->route('login');
 });
 
 // Guest routes
