@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     curl \
     libzip-dev \
-    && docker-php-ext-install pdo pdo_mysql zip
+    && docker-php-ext-install pdo pdo_mysql zip opcache
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -16,13 +16,8 @@ WORKDIR /var/www/html
 
 COPY . .
 
-COPY .env.example .env
-
-RUN composer install --no-interaction --prefer-dist
-
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# IMPORTANT FIX: point Apache to /public folder
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
@@ -32,4 +27,10 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/apache2.conf \
     /etc/apache2/conf-available/*.conf
 
+COPY docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 80
+
+ENTRYPOINT ["/entrypoint.sh"]
