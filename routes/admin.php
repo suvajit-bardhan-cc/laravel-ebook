@@ -8,12 +8,21 @@ use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\ProfileController;
 
 Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])
         ->middleware('permission:access-dashboard')
         ->name('dashboard');
+
+    // Profile Management
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/edit', [ProfileController::class, 'edit'])
+            ->name('edit');
+        Route::put('/edit', [ProfileController::class, 'update'])
+            ->name('update');
+    });
 
     // Users Management
     Route::prefix('users/')->name('users.')->group(function () {
